@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 364cf04e14836c444ae36296bd4f66df, type: 3}
+  m_Name: Silver Dark
+  m_EditorClassIdentifier: 
+  color: {r: 1, g: 1, b: 1, a: 1}
+  fixedColor: {r: 0.3207547, g: 0.3207547, b: 0.3207547, a: 1}
+  twist: 32
+  threadSize: 1
+  threadsNumber: 1
+  material: {fileID: 2100000, guid: da35f98f2a4f92443ad298afc4f29842, type: 2}
+  isMetallic: 1
