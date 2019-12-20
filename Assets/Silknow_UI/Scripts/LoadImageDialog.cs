@@ -18,8 +18,8 @@ public class LoadImageDialog : MonoBehaviour, IPointerDownHandler {
 
     public void OnPointerDown(PointerEventData eventData) {
         UploadFile(gameObject.name, "OnFileUpload", ".png, .jpg, .jpeg", false);
+        
     }
-
     // Called from browser
     public void OnFileUpload(string url) {
         StartCoroutine(OutputRoutine(url));

@@ -28,7 +28,7 @@ public class CurvePipeRenderer : MonoBehaviour {
 	
    
     public void UpdateMesh() {
-	    
+	    ClippingPlane.instance.matList.Add(GetComponent<Renderer>().material);
 	    _meshFilter = GetComponent<MeshFilter>();
 	    
 	    var points = curve.GetPoints();
@@ -43,9 +43,7 @@ public class CurvePipeRenderer : MonoBehaviour {
 
 	    // Vertex: generate an ellipse around each point
 	    _numberOfVertex = points.Count * ((samples)+1)+2;
-
-	    if (_numberOfVertex>Int32.MaxValue) 
-			Debug.LogError("Exceso de vertices");
+	    
 	    var vertex = new Vector3[_numberOfVertex];
 	    var normal = new Vector3[_numberOfVertex];
 	    var uv = new Vector2[_numberOfVertex];

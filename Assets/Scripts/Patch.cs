@@ -27,9 +27,10 @@ public class Patch : MonoBehaviour
 
     public List<Pictorical> pictoricals;
     public int[,] depth;
-    
+    public float explodeLevel = 0.0f;
     public void Awake()
     {
+        explodeLevel = 0;
         if (pictoricals==null)
             pictoricals = new List<Pictorical>();
     }
@@ -50,6 +51,29 @@ public class Patch : MonoBehaviour
         return frontFace;
     }
 
+    public void Update()
+    {
+        updateExplodeLevel(explodeLevel);
+    }
+
+    public void updateExplodeLevel(float level)
+    {
+        level /= transform.childCount;
+        for (int i=0;i<transform.childCount;i++)
+        {
+            int pos = i;
+            if (i > 1)
+                pos = transform.childCount - i+1;
+            transform.GetChild(i).transform.localPosition = level * pos * gap*0.1f*Math.Max(resolution.x,resolution.y)*Vector3.up;
+        }
+    }
+
+    public void setLayerVisible(int index, bool visible)
+    {
+        if (index<transform.childCount)
+            transform.GetChild(index).gameObject.SetActive(visible);
+    }
+    
     public bool pictoricalValueAtPixel(int index, int colunm, int row, out bool healed)
     {
         bool frontFace = pictoricals[index].drawing.Value(colunm, row);
@@ -238,7 +262,6 @@ public class Patch : MonoBehaviour
                     {
                         bool upDown = pictoricalValueAtPixel(index,column, row,out healed);
                         bool nextUpDown = pictoricalValueAtPixel(index,column - 1, row,out healed);
-                        Debug.Log("Row "+row+"Column "+column);
                         // If the yarm doesn't change is not neccesary a control point
                         if ((column != pictorical.firstPoint[row]) && (column != pictorical.lastPoint[row] - 1) && column!=resolution.x && column!=0)
                             if ((upDown == currentUpDown) && (upDown == nextUpDown) && depth[column,row] == depth[column-1,row])
