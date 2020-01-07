@@ -21,5 +21,5 @@ Windows x64 Standalone Release can be found in [Realeses](https://github.com/sil
 WebGL interactive versión is available at [Silknow website](http://www.silknow.eu/virtualLoom-v0.9b/)
 
 ### Sample Images
-For testing purpose, sample images of textiles can be found [here](https://silknow.uv.es/owncloud/index.php/f/626914)
+For testing purpose, sample images of textiles can be found [here](https://silknow.uv.es/owncloud/index.php/s/gK3rSg1PkM1t4j2)
 All these textiles are property of GARIN.  
