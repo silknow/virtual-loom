@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Lousine
   m_EditorClassIdentifier: 
   techniques: 0100000005000000
+  primaryName: ^lousine
+  code: 
+  translatedName: 
   type: 1
-  techniqueImage: {fileID: 21300000, guid: 68e068a1e3792054bade42a47e6e2a90, type: 3}
-  techniqueName: Lousine (b.u.1,1; b.t.2,2)
+  weavePattern: {fileID: 21300000, guid: 68e068a1e3792054bade42a47e6e2a90, type: 3}

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Microsoft.Win32;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Experimental.XR;
@@ -25,13 +26,14 @@ public class CurvePipeRenderer : MonoBehaviour {
 	private Mesh _mesh = null;
 	private MeshFilter _meshFilter;
 	public float angleInc;
-	
+	public Bounds bounds; 
    
     public void UpdateMesh() {
-	    ClippingPlane.instance.matList.Add(GetComponent<Renderer>().material);
+	    if (ClippingPlane.instance)
+			ClippingPlane.instance.matList.Add(GetComponent<Renderer>().material);
 	    _meshFilter = GetComponent<MeshFilter>();
-	    
 	    var points = curve.GetPoints();
+	    //Debug.Log("Number of points in curve "+transform.parent.name+" "+points.Count);
 	    if ((points == null) || (points.Count <= 0))
 		    return;
 
@@ -46,24 +48,30 @@ public class CurvePipeRenderer : MonoBehaviour {
 	    
 	    var vertex = new Vector3[_numberOfVertex];
 	    var normal = new Vector3[_numberOfVertex];
+	    var tangent = new Vector4[_numberOfVertex];
 	    var uv = new Vector2[_numberOfVertex];
 	    Int32 v = 0;
 		
 	    var angleStep = Mathf.PI * 2 / samples;
 	    var length = 0.0f;
-	    float randomAngle = Random.Range(0.0f, 360.0f);
+	    Vector3 tan = -(points[1].Pos - points[0].Pos).normalized;
 	    for (var i=0; i<points.Count; i++)
 	    {
 
 		    float mult =  Mathf.Abs(Mathf.Cos(Mathf.Max(0.0f,(narrowingDistance-points[i].DistanceToKnot)/narrowingDistance) * (float)Math.PI/2));
 		    if (i>0)
+		    {
 			    length += (points[i].Pos - points[i-1].Pos).magnitude;
+				tan = (points[i].Pos - points[i-1].Pos).normalized;
+		    }
 		    for (var j=0; j<=(samples); j++)
 		    {
 			    Vector3 p = points[i].Rot *
-			                new Vector3(Mathf.Cos(angleStep * j + randomAngle) * (minR1 + (r1 - minR1) * mult),
-				                Mathf.Sin(angleStep * j + randomAngle) * (minR2 + (r2 - minR2) * mult), 0);
+			                new Vector3(Mathf.Cos(angleStep * j ) * (minR1 + (r1 - minR1) * mult),
+				                Mathf.Sin(angleStep * j ) * (minR2 + (r2 - minR2) * mult), 0);
 			    normal[v] = p.normalized;
+			    var tan2 = Vector3.Cross(tan,normal[v]);
+			    tangent[v] = new Vector4(tan2.x,tan2.y,tan2.z,1);
 			    uv[v] = new Vector2((float)j/(float)samples, points[i].Distance/textureLength);
 			    vertex[v] = points[i].Pos + p;
 			    v++;
@@ -71,15 +79,15 @@ public class CurvePipeRenderer : MonoBehaviour {
 	    }
 		
 	    // Add central point for the two covers
-	    normal[v] = transform.InverseTransformDirection(points[0].Pos - points[1].Pos);
+	    normal[v] = transform.InverseTransformDirection(points[0].Pos - points[1].Pos).normalized;
+	    tangent[v] = new Vector4(1,0,0, 1);
 	    uv[v] = new Vector2(0.5f,0.5f);
-	    vertex[v++] = transform.InverseTransformPoint(points[0].Pos[0] , points[0].Pos[1],points[0].Pos[2]);
-		
-	    normal[v] = transform.InverseTransformDirection(points[points.Count-1].Pos - points[points.Count-2].Pos);
+	    vertex[v++] = new Vector3(points[0].Pos[0] , points[0].Pos[1],points[0].Pos[2]);
+	    normal[v] = transform.InverseTransformDirection(points[points.Count-1].Pos - points[points.Count-2].Pos).normalized;
+	    tangent[v] = new Vector4(1,0,0, -1);
 	    uv[v] = new Vector2(0.5f,0.5f);
-	    vertex[v++] = transform.InverseTransformPoint(points[points.Count-1].Pos[0] , points[points.Count-1].Pos[1],points[points.Count-1].Pos[2]);
-		
-		
+	    vertex[v++] = new Vector3(points[points.Count-1].Pos[0] , points[points.Count-1].Pos[1],points[points.Count-1].Pos[2]);
+	    
 	    // Triangles: generate triangle to join the ellipses
 	    var numberOfTriangles = (points.Count - 1) * ((samples) * 2);
 	    // Add triangles for the two covers
@@ -123,15 +131,16 @@ public class CurvePipeRenderer : MonoBehaviour {
 		    triangles[t++] = centerCover;
 	    }
 		
-			    // Create the mesh and assign it to the mesh filter component
+	    // Create the mesh and assign it to the mesh filter component
 	    _mesh.vertices = vertex;
 	    _mesh.normals = normal;
 	    _mesh.uv = uv;
 	    _mesh.triangles = triangles;
+	    _mesh.tangents = tangent;
 	    _mesh.RecalculateBounds();
-
+	    bounds = _mesh.bounds;
 	    _meshFilter.mesh = _mesh;
-	    _meshFilter.mesh.RecalculateNormals();
+	    //_meshFilter.mesh.RecalculateNormals();
 	}
 }
 

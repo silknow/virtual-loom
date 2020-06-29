@@ -12,8 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 364cf04e14836c444ae36296bd4f66df, type: 3}
   m_Name: Silk-16
   m_EditorClassIdentifier: 
-  color: {r: 0.8301887, g: 0.55998576, b: 0.55998576, a: 1}
-  twist: 2
-  threadSize: 0.15
+  color: {r: 0.3835124, g: 0.7169812, b: 0.24688502, a: 1}
+  fixedColor: {r: 0, g: 0, b: 0, a: 0}
+  twist: 0.2
+  threadSize: 0.12
+  threadAspect: 1.7
+  threadCompression: 2.5
   threadsNumber: 9
-  material: {fileID: 2100000, guid: 140d6d468eba67745839aa34ae12469f, type: 2}
+  narrowingDistance: 1
+  material: {fileID: 2100000, guid: c8709570c5262f54399427e0e8981363, type: 2}
+  isMetallic: 0

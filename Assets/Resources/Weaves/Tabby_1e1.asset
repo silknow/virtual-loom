@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Tabby_1e1
   m_EditorClassIdentifier: 
   techniques: 0300000005000000
+  primaryName: ^tabby
+  code: _1e1
+  translatedName: 
   type: 1
-  techniqueImage: {fileID: 21300000, guid: 5e69c883e5ce545258b0dcbf791862bb, type: 3}
-  techniqueName: Tabby 1 e 1
+  weavePattern: {fileID: 21300000, guid: 5e69c883e5ce545258b0dcbf791862bb, type: 3}

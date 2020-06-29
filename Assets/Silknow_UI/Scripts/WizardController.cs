@@ -31,7 +31,7 @@ public class WizardController : Singleton<WizardController>
     public YarnPanel selectedYarnPanel;
     
     public YarnPanel warpPanel;
-    public List<GameObject> yarnPanels;
+    public List<YarnPanel> yarnPanels;
     
     public List<Texture2D> imageProcessingResults;
     public Texture2D backgroundWhiteTexture;
@@ -43,11 +43,13 @@ public class WizardController : Singleton<WizardController>
 
     public ColorPicker colorPicker;
 
+    [SerializeField] private ToggleTabInteractivity []tabs;
     [SerializeField] private GameObject wizardWindow;
     [SerializeField] private GameObject colorPickerWindow;
     [SerializeField] private GameObject weaveTechniqueWindow;
     [SerializeField] private GameObject visualizationWindow;
     [SerializeField] private GameObject processingWindow;
+    [SerializeField] private GameObject helpWindow;
 
 
     [SerializeField]
@@ -86,7 +88,7 @@ public class WizardController : Singleton<WizardController>
     {
         clusterList = new List<Color>();
         imageProcessingResults = new List<Texture2D>();
-        yarnPanels = new List<GameObject>();
+        yarnPanels = new List<YarnPanel>();
         
       
         techniqueRestrictions = Resources.LoadAll<WeavingTechniqueRestrictions>("WeavingTechniques").ToList();
@@ -114,11 +116,11 @@ public class WizardController : Singleton<WizardController>
                 break;
             case GeneralTechnique.Spolined:
                 opt.Clear();
-                opt = Enumerable.Range(1, 16).Select(n => n.ToString()).ToList();
+                opt = Enumerable.Range(1, 25).Select(n => n.ToString()).ToList();
                 break;
             case GeneralTechnique.SpolinedDamask:
                 opt.Clear();
-                opt = Enumerable.Range(3, 16).Select(n => n.ToString()).ToList();
+                opt = Enumerable.Range(3, 25).Select(n => n.ToString()).ToList();
                 break;
             case GeneralTechnique.Brocade:
                 opt.Clear();
@@ -131,7 +133,6 @@ public class WizardController : Singleton<WizardController>
             case GeneralTechnique.Freestyle:
                 opt.Clear();
                 opt = Enumerable.Range(1, 16).Select(n => n.ToString()).ToList();
-                
                 break;
             
         }
@@ -187,7 +188,11 @@ public class WizardController : Singleton<WizardController>
     {
         weaveTechniqueWindow.SetActive(!weaveTechniqueWindow.activeInHierarchy);
     }
-    
+    public void ToggleHelpWindow()
+    {
+        helpWindow.SetActive(!helpWindow.activeInHierarchy);
+    }
+
     public void ToggleVisualizationWindow()
     {
         visualizationWindow.SetActive(!visualizationWindow.activeInHierarchy);
@@ -241,7 +246,10 @@ public class WizardController : Singleton<WizardController>
         }
 
         var patch = instantiatedPatch;
-        
+        //Reset Patch Parent Rotation
+        instantiatedPatch.transform.parent.rotation = Quaternion.identity;
+        instantiatedPatch.transform.parent.GetComponent<RotatePatch>().targetRotation = 0;
+
         //Background Pattern
 
 
@@ -291,13 +299,13 @@ public class WizardController : Singleton<WizardController>
             picto.yarn = yarnPanels[i].GetComponent<YarnPanel>().GetScriptableYarn();
             if (bindingWarp)
             {
-                picto.healedStep = 5;
+                picto.healedStep = 6;
                 picto.healedStepGap = 2;
                 
             }
             else if(_generalTechnique == GeneralTechnique.Lampas || _generalTechnique == GeneralTechnique.Brocade)
             {
-                picto.healedStep = 5;
+                picto.healedStep = 6;
                 picto.healedStepGap = 2;
                 picto.doubleHealed = true;
             }
@@ -306,7 +314,10 @@ public class WizardController : Singleton<WizardController>
                 picto.healedStep = -1;
             }
 
-            picto.adjusted = (_generalTechnique != GeneralTechnique.Lampas && _generalTechnique != GeneralTechnique.Brocade  && brocadedFreestyle);
+            //Revisar Freestyle Brocaded
+            picto.adjusted = _generalTechnique == GeneralTechnique.Spolined ||
+                             _generalTechnique == GeneralTechnique.SpolinedDamask ||
+                             (_generalTechnique == GeneralTechnique.Freestyle && brocadedFreestyle);
             
             
             patch.pictoricals.Add(picto);
@@ -315,7 +326,6 @@ public class WizardController : Singleton<WizardController>
         //patch.divider = -1;
         patch.divider = -1f;
 
-        patch.gap = 0.018f;
         
         patch.Weave();
         
@@ -340,9 +350,10 @@ public class WizardController : Singleton<WizardController>
             StartCoroutine(UpdatePatch(0.5f));
         }
     }
-
+    
     IEnumerator UpdatePatch(float delayTime)
     {
+        instantiatedPatch.CleanAll();
         yield return new WaitForSeconds(delayTime);
         instantiatedPatch.Weave();
         ToggleProcessingWindow();
@@ -399,5 +410,20 @@ public class WizardController : Singleton<WizardController>
     public void ToggleProcessingWindow()
     {
         processingWindow.SetActive(!processingWindow.activeInHierarchy);
+    }
+
+    public  void LoadFromJson(VLConfig cfg)
+    {
+        StartCoroutine(jsonReader.GetText(cfg.imgUri,TextureLoaded));
+        tabs[0].gameObject.SetActive(false);
+    }
+
+    private void TextureLoaded(Texture2D texture)
+    {
+        //Pasamos la textura
+        inputTexture = texture;
+        //Activamos el tab de homografia
+        tabs[1].GetComponent<Toggle>().isOn = true;
+       
     }
 }

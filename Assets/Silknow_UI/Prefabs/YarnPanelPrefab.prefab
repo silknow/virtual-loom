@@ -99,6 +99,7 @@ GameObject:
   - component: {fileID: 2024324518081674222}
   - component: {fileID: 2024324518081674220}
   - component: {fileID: 2024324518081674221}
+  - component: {fileID: 5403030425887358431}
   m_Layer: 5
   m_Name: Label
   m_TagString: Untagged
@@ -164,7 +165,21 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Background
+  m_Text: ^background
+--- !u!114 &5403030425887358431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2024324518081674223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 850a68b4aa734d59804538e1ff1aa910, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dontOverwrite: 0
+  _params: []
 --- !u!1 &2024324518106191673
 GameObject:
   m_ObjectHideFlags: 0
@@ -705,6 +720,7 @@ GameObject:
   - component: {fileID: 2024324518841962528}
   - component: {fileID: 2024324518841962529}
   - component: {fileID: 2024324518841962527}
+  - component: {fileID: 440661001641869988}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -770,7 +786,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Yarn
+  m_Text: ^zone {0}
 --- !u!114 &2024324518841962527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -791,6 +807,21 @@ MonoBehaviour:
   m_FlexibleWidth: 1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &440661001641869988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2024324518841962531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 850a68b4aa734d59804538e1ff1aa910, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dontOverwrite: 0
+  _params:
+  - 2
 --- !u!1 &2024324518894209589
 GameObject:
   m_ObjectHideFlags: 0

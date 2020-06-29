@@ -46,7 +46,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speedMultiplier: 0.5
   interpolation: 1
-  samples: 3
+  samples: 4
+  _points: []
+  _knotsDistance: []
 --- !u!114 &6417606269134591259
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59,5 +61,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e8d45e412572847a3655b6745e28f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attributes: {fileID: 11400000, guid: f699dcdf28d644943abec146503705f0, type: 2}
+  attributes: {fileID: 0}
   m: {fileID: 0}
+  bounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}

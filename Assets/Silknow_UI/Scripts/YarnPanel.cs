@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Honeti;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,10 +18,10 @@ public class YarnPanel : MonoBehaviour
     public YarnZone yarnZone = YarnZone.Pictorial;
     public ScriptableYarn defaultWarpYarn;
     
-    public string yarnName
+    public string yarnNumber
     {
-        get => yarnText.text;
-        set => yarnText.text = value;
+        get => yarnText.GetComponent<I18NText>().getParam(0);
+        set => yarnText.GetComponent<I18NText>().updateParam( value,0);
     }
     
     public List<Dropdown.OptionData> yarnOptions
@@ -70,8 +71,16 @@ public class YarnPanel : MonoBehaviour
     
    
     public Toggle backgroundToggle;
-    
 
+
+    public void OnEnable()
+    {
+        I18N.OnLanguageChanged += _onLanguageChanged;
+    }
+    public void OnDisable()
+    {
+        I18N.OnLanguageChanged -= _onLanguageChanged;
+    }
 
     public ScriptableYarn GetScriptableYarn()
     {
@@ -100,7 +109,30 @@ public class YarnPanel : MonoBehaviour
     
     public RectTransform backgroundZone;
     public RectTransform pictoricalZone;
+    
+    
+    private void _onLanguageChanged(LanguageCode newLang)
+    {
+        UpdateYarnTypes();
+    }
 
+    private void _updateTranslation()
+    {
+        /*if (_text)
+        {
+            if (!_isValidKey)
+            {
+                _key = _text.text;
+
+                if (_key.StartsWith("^"))
+                {
+                    _isValidKey = true;
+                }
+            }
+
+            _text.text = I18N.instance.getValue(_key, _params);
+        }*/
+    }
     public void OnChangeParent(bool value)
     {
         if (value && parentManager.backgroundYarns.Count > WizardController.instance.selectedTechniqueRestrictions.backgroundWeftCount)
@@ -129,6 +161,14 @@ public class YarnPanel : MonoBehaviour
                         {
                             yarnPanel.backgroundToggle.GetComponentInChildren<Text>().text = "Pictorial Bg";
                         }
+                }
+            }
+            else
+            {
+                if (parentManager.backgroundYarns.Count == 2)
+                {
+                    WizardController.instance.warpPanel.outputColor = outputColor;
+                    WizardController.instance.warpPanel.inputColor = inputColor;
                 }
             }
         }
@@ -186,7 +226,8 @@ public class YarnPanel : MonoBehaviour
         }
         foreach (var yarnType in yarnList)
         {
-            yarnTypeDropdown.options.Add(new Dropdown.OptionData() {text=yarnType.name});
+            yarnType.translatedName = I18N.instance.getValue("^" + yarnType.name);
+            yarnTypeDropdown.options.Add(new Dropdown.OptionData() {text=yarnType.translatedName});
         }
         yarnTypeDropdown.value = 0;
         OnChangeYarnType(0);

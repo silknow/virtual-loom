@@ -44,7 +44,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
-        m_Texture: {fileID: 2800000, guid: 28b9c94c0fa04d6478586637291b20fd, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -60,7 +60,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _TangentDir:
-        m_Texture: {fileID: 2800000, guid: 5b61f4cfa34a942c7b01f19d4dc7d6ea, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
@@ -74,11 +74,14 @@ Material:
     - _EnableDitheredOpacity: 0
     - _EnableMetallGlossMap: 0
     - _EnableSpecGlossMap: 1
-    - _Glossiness: 0.746
-    - _Metallic: 0.174
-    - _MetallicBand: 0
+    - _Glossiness: 0.537
+    - _MetalRepeat: 0
+    - _MetalTwist: 0
+    - _Metallic: 0.188
+    - _MetallicBand: 0.406
     - _Mode: 0
     - _NoisePower: 0
+    - _NormalAmount: 0.681
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _Repeat: 0.16
@@ -89,17 +92,18 @@ Material:
     - _SmoothnessY: 0
     - _SrcBlend: 1
     - _TangentDirScale: 0.23
-    - _TangentDirStrength: 0.815
+    - _TangentDirStrength: 0.706
     - _Threads: 2.97
     - _Translucency: 0
     - _Twist: -0.16
     - _UVSec: 0
-    - _VertexOcclusionStrength: 0.5
+    - _VertexOcclusionStrength: 0.623
     - _ZWrite: 1
     m_Colors:
     - _BaseTangentDir: {r: 0, g: 1, b: 0, a: 1}
     - _Color: {r: 1, g: 0, b: 0, a: 1}
     - _DiffuseScatteringCol: {r: 0.5283019, g: 0.11213957, b: 0.21625695, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _MetalColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0.25, g: 0.25, b: 0.25, a: 1}
     - _TangentDir: {r: 1, g: 0, b: 0, a: 0}

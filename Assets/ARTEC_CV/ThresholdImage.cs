@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
-using UnityEngine.Experimental.PlayerLoop;
 using UnityEngine.UI;
 
 public class ThresholdImage : MonoBehaviour

@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Regular Satin, 7 (5 e 2)
   m_EditorClassIdentifier: 
   techniques: 0000000004000000010000000200000005000000
+  primaryName: ^regular satin
+  code: ' 7, (5 e 2)'
+  translatedName: 
   type: 0
-  techniqueImage: {fileID: 21300000, guid: 8d518be4b8866c441a3721ac8d488e60, type: 3}
-  techniqueName: 'Regular Satin, 7 (5 e 2) '
+  weavePattern: {fileID: 21300000, guid: 8d518be4b8866c441a3721ac8d488e60, type: 3}

@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEditor;
 
 [CustomEditor(typeof(Patch))]
-public class PatchEditor : Editor
+public class PatchEditor : UnityEditor.Editor
 {
     public override void OnInspectorGUI()
     {

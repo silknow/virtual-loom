@@ -1,21 +1,20 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 
 namespace ARTEC.Curves
 {
-    [ExecuteInEditMode]
-    public class CurveControlPoint : MonoBehaviour
-        {
-            public float scale=0.001f;
-            public bool changeUpDown = false;
-            public float distance = 0;
-        void Update()
-        {
-            /*transform.localScale = Vector3.one * scale *
-                                   Vector3.Distance(Camera.current.transform.position, transform.position);*/
-        }
-        
+    public class CurveControlPoint// : MonoBehaviour
+    {
+
+        public Vector3 pos;
+        public Quaternion rot;
+        public bool changeUpDown = false;
+        public float distance = 0;
+
+        public Vector3 right => rot*Vector3.right;
+        public Vector3 forward=> rot*Vector3.forward;
     }
 }

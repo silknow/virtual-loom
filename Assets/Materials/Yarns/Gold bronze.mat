@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Gold bronze
-  m_Shader: {fileID: 4800000, guid: 951f2c27378a8f346bf9ef60969bcfce, type: 3}
+  m_Shader: {fileID: 4800000, guid: 9475f8be6594ecb4dac5289fd9045cfc, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
   m_EnableInstancingVariants: 1
@@ -41,11 +41,15 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 8b6d13da7b3eb154dba939701b0add64, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Scale: {x: 6, y: 10}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 2800000, guid: 312d83e1f17b29b40b68490f03998687, type: 3}
         m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 2800000, guid: e521ea5ca593aa54897f3217d0451a32, type: 3}
+        m_Scale: {x: 1.04, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
         m_Texture: {fileID: 0}
@@ -65,7 +69,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _BumpScale: 1
-    - _Cutoff: 0.349
+    - _Cutoff: 1
     - _DetailNormalMapScale: 1
     - _DiffuseScatteringBias: 0.268
     - _DiffuseScatteringContraction: 2.59
@@ -74,16 +78,21 @@ Material:
     - _EnableDitheredOpacity: 0
     - _EnableMetallGlossMap: 0
     - _EnableSpecGlossMap: 1
-    - _Glossiness: 0.759
-    - _MetalRepeat: 0
-    - _MetalTwist: 5.2
-    - _Metallic: 0.732
-    - _MetallicBand: 0.849
+    - _Glossiness: 0
+    - _GlossinessInMetal: 0.75
+    - _MetalRepeat: 0.33
+    - _MetalTwist: 0.5
+    - _Metallic: 0
+    - _MetallicBand: 0.85
+    - _MetallicInMetal: 0.5
     - _Mode: 0
     - _NoisePower: 0
+    - _NormalAmount: 1
+    - _NormalMapScale: 1
+    - _NormalScale: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _Repeat: 1
+    - _Repeat: 2.12
     - _RoughnessX: 0.975
     - _RoughnessY: 0
     - _SmoothnessExtinction: 1
@@ -94,7 +103,7 @@ Material:
     - _TangentDirStrength: 0.565
     - _Threads: 1
     - _Translucency: 1
-    - _Twist: -0.3
+    - _Twist: 20
     - _UVSec: 0
     - _VertexOcclusionStrength: 0.797
     - _ZWrite: 1

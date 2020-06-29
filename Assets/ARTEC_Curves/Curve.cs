@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System.Linq;
 namespace ARTEC.Curves {
 
 /* Class to create a curve from a set of keypoints */
@@ -14,6 +14,7 @@ public class Curve : MonoBehaviour {
 		CatmullRom
 	}
 
+	[Serializable]
 	public class CurveSample {
 		public Vector3 Pos;
 		public Quaternion Rot;
@@ -27,12 +28,13 @@ public class Curve : MonoBehaviour {
 	public float speedMultiplier = 0.0f;
 	public CurveInterpolation interpolation = CurveInterpolation.CatmullRom;
 	public int samples = 10;
-	private CurveControlPoint[]controlPoints;
-	private List<CurveSample> _points;
+	private  List<CurveControlPoint> _controlPoints = null;
+	
+	public List<CurveSample> _points;
 	private CurveSample _prevPoint;
 
-	private List<float> _knotsDistance;
-	private List<int> _knotsIndexes;
+	public List<float> _knotsDistance;
+	//public List<int> _knotsIndexes;
 
 	private float d = 0;
 
@@ -42,42 +44,45 @@ public class Curve : MonoBehaviour {
 		return _points;
 	}
 
-	public void AddControlPoint(Vector3 pos, Quaternion rot, bool changeUpDown)
+	public void AddControlPoint(Vector3 pos, Quaternion rot, bool changeUpDown,string name=null)
 	{
-		var go= (GameObject)Resources.Load("CPGizmo");
-		var cp = (GameObject)Instantiate(go,transform);	        
-		cp.transform.localPosition = pos;
-		cp.transform.localRotation = rot;
-
-		CurveControlPoint ccp = cp.GetComponent<CurveControlPoint>();
+		CurveControlPoint ccp=new CurveControlPoint();
 		ccp.changeUpDown = changeUpDown;
+		ccp.pos = pos;
+		ccp.rot = rot;
+		if (_controlPoints ==null) 
+			_controlPoints = new List<CurveControlPoint>();
+		_controlPoints.Add(ccp);
+		
 	}
-
+	
 	public void UpdateCurve()
 	{
-		if (_points == null)
-		{
-			_points = new List<CurveSample>();
-			
-		}
-
 		if (_points == null)
 			_points = new List<CurveSample>();
 
 		if (_knotsDistance == null)
 		{
 			_knotsDistance = new List<float>();
-			_knotsIndexes = new List<int>();
+			//_knotsIndexes = new List<int>();
+		}
+		if (_controlPoints ==null) 
+			_controlPoints = new List<CurveControlPoint>();
+		if (GetComponentInParent<Patch>() == null)
+		{
+			_controlPoints.Clear();
+			CurveControlPointMonoBehaviour[] ccpmb = GetComponentsInChildren<CurveControlPointMonoBehaviour>();
+			for (int i = 0; i < ccpmb.Length; i++)
+				_controlPoints.Add(ccpmb[i].ccp);
 		}
 
-		controlPoints = GetComponentsInChildren<CurveControlPoint>();
 		// Clear points list
 		_points.Clear();
 		_knotsDistance.Clear();
-		_knotsIndexes.Clear();
+		//_knotsIndexes.Clear();
 
 		// For each interval
-		for (var i = 0; i < controlPoints.Length - 1; i++)
+		for (var i = 0; i < _controlPoints.Count - 1; i++)
 		{
 			d = 0;
 
@@ -85,18 +90,17 @@ public class Curve : MonoBehaviour {
 			{
 				_prevPoint = GetSample(i, (float) u / (float) samples);
 				_prevPoint.Distance = 0;
-				_prevPoint.Interval = i;
 				//d = _prevPoint.D = Mathf.Min(Vector3.Distance(_prevPoint.Pos, controlPoints[i].transform.position),Vector3.Distance(_prevPoint.Pos, controlPoints[i+1].transform.position));
 				_points.Add(_prevPoint);
 			}
 		}
 
 		// Last point
-		if (controlPoints.Length > 1)
+		if (_controlPoints.Count > 1)
 		{
 			var last = new CurveSample();
-			last.Pos = controlPoints[controlPoints.Length - 1].transform.position;
-			last.Rot = controlPoints[controlPoints.Length - 1].transform.rotation;
+			last.Pos = _controlPoints[_controlPoints.Count - 1].pos;//transform.position;
+			last.Rot = _controlPoints[_controlPoints.Count - 1].rot;//transform.rotation;
 			last.U = 1.0f;
 			//last.D = 0.0f;
 			last.DistanceToKnot = 0.0f;
@@ -108,37 +112,42 @@ public class Curve : MonoBehaviour {
 		{
 			_points[i].Distance = _points[i - 1].Distance + (_points[i].Pos - _points[i - 1].Pos).magnitude;
 			// If it is the first point in the interval, update the distance of the control point
-			if (_points[i].U < 0.000001f)
-				controlPoints[_points[i].Interval].distance = _points[i].Distance;
+			if (i%samples==0)
+				_controlPoints[i/samples].distance = _points[i].Distance;
 		}
 
-		controlPoints[controlPoints.Length - 1].distance = _points[_points.Count - 1].Distance;
-
+		if (_controlPoints.Count>0 && _points.Count>0)
+			_controlPoints[_controlPoints.Count - 1].distance = _points[_points.Count - 1].Distance;
+		else
+		{
+			//Debug.LogError("_controlPoints:"+_controlPoints.Count+" and _points:"+_points.Count);
+			return;
+		}
 		// Compute knots, create a knot before each up/down change
 		_knotsDistance.Add(0.0f);
-		_knotsIndexes.Add(0);
-		for (var i = 1; i < controlPoints.Length; i++)
+		//_knotsIndexes.Add(0);
+		for (var i = 1; i < _controlPoints.Count; i++)
 		{
-			if (controlPoints[i].changeUpDown)
+			if (_controlPoints[i].changeUpDown)
 			{
-				float kDistance = controlPoints[i].distance * 0.5f + controlPoints[i - 1].distance * 0.5f;
+				float kDistance = _controlPoints[i].distance * 0.5f + _controlPoints[i - 1].distance * 0.5f;
 				_knotsDistance.Add(kDistance);
-				_knotsIndexes.Add(i);
+				//_knotsIndexes.Add(i);
 				
 			}
 		}
 
-		_knotsDistance.Add(controlPoints[controlPoints.Length - 1].distance);
-		_knotsIndexes.Add(controlPoints.Length - 1);
+		_knotsDistance.Add(_controlPoints[_controlPoints.Count - 1].distance);
+		//_knotsIndexes.Add(controlPoints.Length - 1);
 
 		
 		 // Update the distance to the closest knot
 		int j = 1;
 		for (int i=1;i<_points.Count;i++)
 		{
-			_points[i].DistanceToKnot = Mathf.Min(_knotsDistance[j] - _points[i].Distance,
-				_knotsDistance[j - 1] - _points[i].Distance);
-			if (_points[i].Interval > _knotsIndexes[j])
+			_points[i].DistanceToKnot = Mathf.Min(Mathf.Abs(_knotsDistance[j] - _points[i].Distance),
+				Mathf.Abs(_knotsDistance[j - 1] - _points[i].Distance));
+			if (_points[i].Distance > _knotsDistance[j])
 				j++;
 		}
 
@@ -158,11 +167,11 @@ public class Curve : MonoBehaviour {
 	private CurveSample Lineal(int i, float u) {
 		var sample = new CurveSample();
 
-		var t1 = controlPoints[i].transform;
-		var t2 = controlPoints[i+1].transform;
+		var t1 = _controlPoints[i];
+		var t2 = _controlPoints[i+1];
 
-		sample.Pos = Vector3.Lerp(t1.position, t2.position, u);
-		sample.Rot = Quaternion.Slerp(t1.rotation, t2.rotation, u);
+		sample.Pos = Vector3.Lerp(t1.pos, t2.pos, u);
+		sample.Rot = Quaternion.Slerp(t1.rot, t2.rot, u);
 		sample.U = u;
 
 		return sample;
@@ -174,22 +183,22 @@ public class Curve : MonoBehaviour {
 		//-----------
 		// When u==0, just return the first point of the interval
 		if (u <= 0) {
-			sample.Pos = controlPoints[i].transform.position;
-			sample.Rot = controlPoints[i].transform.rotation;
+			sample.Pos = _controlPoints[i].pos;
+			sample.Rot = _controlPoints[i].rot;
 			sample.U = 0;
 			return sample;
 		}
 
 		//----------
 		// Position
-		var p1 = controlPoints[i].transform.position;
+		var p1 = _controlPoints[i].pos;
 		var p0 = p1;
 		if (i > 0)
-			p0 = controlPoints[i].transform.position;
-		var p2 = controlPoints[i+1].transform.position;
+			p0 = _controlPoints[i].pos;
+		var p2 = _controlPoints[i+1].pos;
 		var p3 = p2;
-		if (i+2 < controlPoints.Length)
-			p3 = controlPoints[i+2].transform.position;
+		if (i+2 < _controlPoints.Count)
+			p3 = _controlPoints[i+2].pos;
 
 		var tens = speedMultiplier;
 		var u2 = u*u;
@@ -201,8 +210,8 @@ public class Curve : MonoBehaviour {
 		
 		//----------
 		// Rotation
-		var t1 = controlPoints[i].transform;
-		var t2 = controlPoints[i+1].transform;
+		var t1 = _controlPoints[i];
+		var t2 = _controlPoints[i+1];
 		sample.Rot = _prevPoint.Rot;
 
 		// Keep the forward tangent to the curve
@@ -223,18 +232,18 @@ public class Curve : MonoBehaviour {
 		//-----------
 		// When u==0, just return the first point of the interval
 		if (u <= 0) {
-			sample.Pos = controlPoints[i].transform.position;
-			sample.Rot = controlPoints[i].transform.rotation;
+			sample.Pos = _controlPoints[i].pos;
+			sample.Rot = _controlPoints[i].rot;
 			sample.U = 0;
 			return sample;
 		}
 
 		//----------
 		// Position
-		var p0 = controlPoints[i].transform.position;
-		var p1 = controlPoints[i+1].transform.position;
-		var v0 = controlPoints[i].transform.forward * speedMultiplier;
-		var v1 = controlPoints[i+1].transform.forward * speedMultiplier;
+		var p0 = _controlPoints[i].pos;
+		var p1 = _controlPoints[i+1].pos;
+		var v0 = _controlPoints[i].forward * speedMultiplier;
+		var v1 = _controlPoints[i+1].forward * speedMultiplier;
 
 		var u2 = u*u;
 		var u3 = u2 * u;
@@ -245,8 +254,8 @@ public class Curve : MonoBehaviour {
 
 		//----------
 		// Rotation
-		var t1 = controlPoints[i].transform;
-		var t2 = controlPoints[i+1].transform;
+		var t1 = _controlPoints[i];
+		var t2 = _controlPoints[i+1];
 		sample.Rot = _prevPoint.Rot;
 
 		// Keep the forward tangent to the curve

@@ -46,6 +46,14 @@ public class HomographyImage : MonoBehaviour
         UpdateHomography();
     }
 
+    public void ResetHomographyPoints()
+    {
+        for (int i=0; i<4; i++) {
+            HomographyPoints[i].anchoredPosition  = Vector2.zero;
+        }
+        UpdateHomography();
+    }
+
     public void UpdateHomography() {
 
         if (HomographyPoints.Length >= 4) {
@@ -149,6 +157,7 @@ public class HomographyImage : MonoBehaviour
                 WizardController.instance.homographyResult.SetPixel(x,y,pixelColor);
             }
         WizardController.instance.homographyResult.Apply();
+        WizardController.instance.posterizeResult = null;
 
 //        byte[] resultBytes = result.EncodeToPNG();
 //        File.WriteAllBytes(Application.streamingAssetsPath + "/correctedImage.png", resultBytes);

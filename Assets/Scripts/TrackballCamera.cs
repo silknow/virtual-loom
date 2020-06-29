@@ -3,6 +3,7 @@ using UnityEngine.EventSystems;
 
 public class TrackballCamera : MonoBehaviour
 {
+    public float minDistance, maxDistance;
     public float distance = 15f;
     public Vector3 center;
     public Camera camera;
@@ -18,8 +19,12 @@ public class TrackballCamera : MonoBehaviour
     private void Start()
     {
     }
- 
- 
+
+
+    public void Center()
+    {
+        
+    }
     private Vector3 lastMousePos;
     private void LateUpdate()
     {
@@ -34,15 +39,18 @@ public class TrackballCamera : MonoBehaviour
         // Update distance
         distance *= 1 - (Input.mouseScrollDelta.y*Speed);
     
-        if (distance > -0.3)
-            distance = -0.3f;
-        if (distance < -50)
-            distance = -50;
+         if (distance > -minDistance)
+             distance = -minDistance;
+         if (distance < -maxDistance)
+             distance = -maxDistance;
         
         // Update angles
-        if (Input.GetMouseButton(0)) {
-            
-            HPR += (Input.mousePosition - lastMousePos) * HPRSpeed;
+        if (Input.GetMouseButton(0))
+        {
+            Vector3 angles = Input.mousePosition - lastMousePos;
+//            angles[2] = angles[0];
+//            angles[0] = 0;
+            HPR += (angles) * HPRSpeed;
         }
 
         if (Input.GetMouseButton(1)) {
@@ -51,8 +59,11 @@ public class TrackballCamera : MonoBehaviour
 
             Vector3 offset = (Input.mousePosition - lastMousePos) * meterPixel;
             
-            offset = camera.transform.rotation * offset;
-            offset[2] = 0;
+            offset = camera.transform.localRotation * offset;
+            
+            // Change translation from Z to Y axis
+//            offset[2] = offset[1];
+//            offset[1] = 0;
 
             // float invertX = Vector3.Dot(Vector3.right, camera.transform.right);
             // float invertY = Vector3.Dot(Vector3.up, camera.transform.up);
@@ -74,8 +85,8 @@ public class TrackballCamera : MonoBehaviour
         Quaternion cameraRot = Quaternion.Euler(-HPR.y, +HPR.x, HPR.z);
         Vector3 targetPos = center + cameraRot * Vector3.forward * distance;
 
-        camera.transform.position = targetPos;
-        camera.transform.rotation = Quaternion.LookRotation(center - targetPos, cameraRot * Vector3.up);
+        camera.transform.localPosition = targetPos;
+        camera.transform.localRotation = Quaternion.LookRotation(center - targetPos, cameraRot * Vector3.up);
 
         lastMousePos = Input.mousePosition;
     }

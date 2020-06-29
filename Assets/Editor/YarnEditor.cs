@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using ARTEC.Curves;
 [CustomEditor(typeof(Yarn))]
-public class YarnEditor : Editor
+public class YarnEditor : UnityEditor.Editor
 {
     public override void OnInspectorGUI()
     {
@@ -12,9 +12,7 @@ public class YarnEditor : Editor
         Yarn yarn = (Yarn)target;
         if (GUILayout.Button("Update"))
         {
-            
-           yarn.UpdateMesh();
-           
+            yarn.UpdateMesh();
         }
     }
 }

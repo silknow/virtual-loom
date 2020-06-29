@@ -7,14 +7,21 @@ using UnityEngine.UI;
 public class ToggleTabInteractivity : MonoBehaviour
 {
     public int tab;
-
+    public TabContentManager tcm;
+        
     private Toggle toggle;
-
+    
     private void Awake()
     {
         toggle = GetComponent<Toggle>();
     }
 
+    private void OnDisable()
+    {
+        tcm.gameObject.SetActive(false);
+    }
+
+   
     // Update is called once per frame
     void Update()
     {

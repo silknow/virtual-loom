@@ -82,7 +82,8 @@ public class SaveScreenshotDialog : MonoBehaviour, IPointerDownHandler {
 
         var w = Screen.width;
         var h = Screen.height;
-        
+        w = 4096;
+        h = (int)(1.0f * w * Screen.height / Screen.width);
         Rect rect = new Rect(0, 0, w, h);
         RenderTexture renderTexture = new RenderTexture(w, h, 24);
         Texture2D texture = new Texture2D(w, h, TextureFormat.RGBA32, false);

@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Cotton
-  m_Shader: {fileID: 4800000, guid: 951f2c27378a8f346bf9ef60969bcfce, type: 3}
+  m_Shader: {fileID: 4800000, guid: 9475f8be6594ecb4dac5289fd9045cfc, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
   m_EnableInstancingVariants: 1
@@ -41,10 +41,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 8b6d13da7b3eb154dba939701b0add64, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Scale: {x: 20, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 2800000, guid: 28b9c94c0fa04d6478586637291b20fd, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -75,10 +79,17 @@ Material:
     - _EnableMetallGlossMap: 0
     - _EnableSpecGlossMap: 1
     - _Glossiness: 0.031
+    - _GlossinessInMetal: 0.5
+    - _MetalRepeat: 0
+    - _MetalTwist: 0
     - _Metallic: 0.256
     - _MetallicBand: 0
+    - _MetallicInMetal: 0
     - _Mode: 0
     - _NoisePower: -0.01
+    - _NormalAmount: 1
+    - _NormalMapScale: 1
+    - _NormalScale: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _Repeat: 0.23
@@ -101,5 +112,6 @@ Material:
     - _Color: {r: 0.8773585, g: 0.8773585, b: 0.8773585, a: 1}
     - _DiffuseScatteringCol: {r: 0.8207547, g: 0.7162246, b: 0.7418641, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _MetalColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0.25, g: 0.25, b: 0.25, a: 1}
     - _TangentDir: {r: 1, g: 0, b: 0, a: 0}

@@ -19,6 +19,7 @@ MonoBehaviour:
   weftYarns:
   - {fileID: 11400000, guid: 12cfe1d2731063745b352deee2f89cba, type: 2}
   pictorialYarns:
+  - {fileID: 11400000, guid: c7e0a6fc36e753e4186e5ec4edba4ca2, type: 2}
   - {fileID: 11400000, guid: f699dcdf28d644943abec146503705f0, type: 2}
   pictorialZone: 1
   backgroundWeftCount: 1

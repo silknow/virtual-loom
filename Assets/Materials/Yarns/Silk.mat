@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Silk
-  m_Shader: {fileID: 4800000, guid: 951f2c27378a8f346bf9ef60969bcfce, type: 3}
+  m_Shader: {fileID: 4800000, guid: 9475f8be6594ecb4dac5289fd9045cfc, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
   m_EnableInstancingVariants: 1
@@ -41,10 +41,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 8b6d13da7b3eb154dba939701b0add64, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Scale: {x: 1, y: 0.3}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
-        m_Texture: {fileID: 2800000, guid: 28b9c94c0fa04d6478586637291b20fd, type: 3}
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -60,12 +64,12 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _TangentDir:
-        m_Texture: {fileID: 2800000, guid: 5b61f4cfa34a942c7b01f19d4dc7d6ea, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _BumpScale: 1
-    - _Cutoff: 0.342
+    - _Cutoff: 0
     - _DetailNormalMapScale: 1
     - _DiffuseScatteringBias: 0.02
     - _DiffuseScatteringContraction: 7.6
@@ -75,15 +79,20 @@ Material:
     - _EnableMetallGlossMap: 0
     - _EnableSpecGlossMap: 1
     - _Glossiness: 0.679
+    - _GlossinessInMetal: 0.5
     - _MetalRepeat: 0
-    - _MetalTwist: 0
-    - _Metallic: 0.512
+    - _MetalTwist: 10.62
+    - _Metallic: 0.327
     - _MetallicBand: 0
+    - _MetallicInMetal: 0
     - _Mode: 0
     - _NoisePower: 0
+    - _NormalAmount: 1
+    - _NormalMapScale: 1
+    - _NormalScale: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _Repeat: 0.16
+    - _Repeat: 4.97
     - _RoughnessX: 0.975
     - _RoughnessY: 0
     - _SmoothnessExtinction: 1
@@ -92,15 +101,15 @@ Material:
     - _SrcBlend: 1
     - _TangentDirScale: 0.23
     - _TangentDirStrength: 0.815
-    - _Threads: 2.97
+    - _Threads: 3
     - _Translucency: 0
-    - _Twist: -0.16
+    - _Twist: 1.62
     - _UVSec: 0
     - _VertexOcclusionStrength: 0.5
     - _ZWrite: 1
     m_Colors:
     - _BaseTangentDir: {r: 0, g: 1, b: 0, a: 1}
-    - _Color: {r: 1, g: 0, b: 0, a: 1}
+    - _Color: {r: 0.56078434, g: 0.83137256, b: 0.83137256, a: 1}
     - _DiffuseScatteringCol: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _MetalColor: {r: 1, g: 1, b: 1, a: 1}

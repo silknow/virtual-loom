@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Honeti;
 using UnityEngine;
 
 public class LoadWeavesByTechnique : MonoBehaviour
@@ -48,7 +49,7 @@ public class LoadWeavesByTechnique : MonoBehaviour
          {
             var panel = GameObject.Instantiate(weavePanelPrefab, satinContent);
             panel.GetComponent<WeavePanel>().image = satinWeave.weavePattern;
-            panel.GetComponent<WeavePanel>().name = satinWeave.name;
+            panel.GetComponent<WeavePanel>().name = I18N.instance.getValue(satinWeave.primaryName)+satinWeave.code;
             panel.GetComponent<WeavePanel>().weavingTechnique = satinWeave;
             if(WizardController.instance.selectedWeave == satinWeave)
                panel.GetComponent<WeavePanel>().SetSelectedColor();
@@ -72,7 +73,7 @@ public class LoadWeavesByTechnique : MonoBehaviour
          {
             var panel = GameObject.Instantiate(weavePanelPrefab, twillContent);
             panel.GetComponent<WeavePanel>().image = twillWeave.weavePattern;
-            panel.GetComponent<WeavePanel>().name = twillWeave.name;
+            panel.GetComponent<WeavePanel>().name = I18N.instance.getValue(twillWeave.primaryName)+twillWeave.code;
             panel.GetComponent<WeavePanel>().weavingTechnique = twillWeave;
             if(WizardController.instance.selectedWeave == twillWeave)
                panel.GetComponent<WeavePanel>().SetSelectedColor();
@@ -96,7 +97,7 @@ public class LoadWeavesByTechnique : MonoBehaviour
          {
             var panel = GameObject.Instantiate(weavePanelPrefab, tabbyContent);
             panel.GetComponent<WeavePanel>().image = tabbyWeave.weavePattern;
-            panel.GetComponent<WeavePanel>().name = tabbyWeave.name;
+            panel.GetComponent<WeavePanel>().name = I18N.instance.getValue(tabbyWeave.primaryName)+tabbyWeave.code;
             panel.GetComponent<WeavePanel>().weavingTechnique = tabbyWeave;
             if(WizardController.instance.selectedWeave == tabbyWeave)
                panel.GetComponent<WeavePanel>().SetSelectedColor();

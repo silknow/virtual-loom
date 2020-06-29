@@ -12,6 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 364cf04e14836c444ae36296bd4f66df, type: 3}
   m_Name: Simple
   m_EditorClassIdentifier: 
+  color: {r: 1, g: 1, b: 1, a: 1}
+  fixedColor: {r: 0, g: 0, b: 0, a: 0}
   twist: 10
-  size: 1
+  threadSize: 1
+  threadAspect: 1
+  threadCompression: 1
   threadsNumber: 16
+  narrowingDistance: 1
+  material: {fileID: 2100000, guid: da8f3b6eec4814bb48f80a9177071b64, type: 2}
+  isMetallic: 0

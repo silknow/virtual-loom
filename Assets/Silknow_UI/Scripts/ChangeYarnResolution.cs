@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Honeti;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ChangeYarnResolution : MonoBehaviour
 {
-    public Text numberOfYarnsText;
+    public I18NText numberOfYarnsText;
     
     
     private void OnEnable()
@@ -19,13 +20,13 @@ public class ChangeYarnResolution : MonoBehaviour
         
         if (WizardController.instance.instantiatedPatch != null)
             GetComponent<Slider>().value = WizardController.instance.instantiatedPatch.divider;
-        numberOfYarnsText.text = WizardController.instance.instantiatedPatch.resolution.x.ToString() + " yarns";
+        numberOfYarnsText.updateParam(WizardController.instance.instantiatedPatch.resolution.x.ToString(),0);
 
     }
 
     public void OnYarnSliderChange(float value)
     {
         WizardController.instance.instantiatedPatch.divider = value;
-        numberOfYarnsText.text = ((int)(WizardController.instance.instantiatedPatch.backgroundPattern.getOriginalResolution().x / value)).ToString() + " yarns";
+        numberOfYarnsText.updateParam(""+(int)(WizardController.instance.instantiatedPatch.backgroundPattern.getOriginalResolution().x/value),0);
     }
 }

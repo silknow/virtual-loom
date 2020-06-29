@@ -13,7 +13,12 @@ MonoBehaviour:
   m_Name: Cotton
   m_EditorClassIdentifier: 
   color: {r: 1, g: 1, b: 1, a: 1}
+  fixedColor: {r: 0, g: 0, b: 0, a: 0}
   twist: 40
-  threadSize: 1
-  threadsNumber: 16
+  threadSize: 0.23
+  threadAspect: 1
+  threadCompression: 1
+  threadsNumber: 20
+  narrowingDistance: 1
   material: {fileID: 2100000, guid: 3bad1388dc85b594b937d1c81b03e543, type: 2}
+  isMetallic: 0

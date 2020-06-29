@@ -7,7 +7,9 @@ using UnityEngine.Serialization;
 public class Weave : ScriptableObject
 {
     public List<GeneralTechnique> techniques;
-
+    public string primaryName;
+    public string code;
+    public string translatedName;
     public enum WeavingTechniqueType
     {
         Satin,
@@ -17,6 +19,4 @@ public class Weave : ScriptableObject
 
     public WeavingTechniqueType type;
     [FormerlySerializedAs("techniqueImage")] public Sprite weavePattern;
-
-    [FormerlySerializedAs("techniqueName")] public string weaveName;
 }

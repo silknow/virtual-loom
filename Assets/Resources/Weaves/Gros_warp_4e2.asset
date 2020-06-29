@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Gros_warp_4e2
   m_EditorClassIdentifier: 
   techniques: 0100000005000000
+  primaryName: ^gros_warp
+  code: '  (b.u.4,2; b.t.1,1)'
+  translatedName: 
   type: 1
-  techniqueImage: {fileID: 21300000, guid: 300661746c6bb3248b4992cfce97be02, type: 3}
-  techniqueName: Gros (warp)  (b.u.4,2; b.t.1,1)
+  weavePattern: {fileID: 21300000, guid: 300661746c6bb3248b4992cfce97be02, type: 3}

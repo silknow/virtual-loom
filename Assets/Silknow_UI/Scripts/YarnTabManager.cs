@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Honeti;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -49,15 +50,15 @@ public class YarnTabManager : MonoBehaviour
         WizardController.instance.yarnPanels.Clear();
         for (int i = 0; i < WizardController.instance.clusterList.Count; i++)
         {
-            var panel = GameObject.Instantiate(prefabYarnPanel, parentPictorical);
+            var panel = GameObject.Instantiate(prefabYarnPanel, parentPictorical).GetComponent<YarnPanel>();
             
-            panel.GetComponent<YarnPanel>().parentManager = this;
-            panel.GetComponent<YarnPanel>().inputColor = WizardController.instance.clusterList[i];
-            panel.GetComponent<YarnPanel>().outputColor = WizardController.instance.clusterList[i];
-            panel.GetComponent<YarnPanel>().yarnName = "Zone " + (i + 1);
-            panel.GetComponent<YarnPanel>().isBackground = false;
-            panel.GetComponent<YarnPanel>().backgroundZone = parentBackground;
-            panel.GetComponent<YarnPanel>().pictoricalZone = parentPictorical;
+            panel.parentManager = this;
+            panel.inputColor = WizardController.instance.clusterList[i];
+            panel.outputColor = WizardController.instance.clusterList[i];
+            panel.yarnNumber =""+ (i + 1);
+            panel.isBackground = false;
+            panel.backgroundZone = parentBackground;
+            panel.pictoricalZone = parentPictorical;
             //if (WizardController.instance.selectedTechniqueRestrictions.pictorialZone)
             //{
                 panel.GetComponent<YarnPanel>().yarnZone = YarnPanel.YarnZone.Pictorial;

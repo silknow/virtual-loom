@@ -16,6 +16,7 @@ public class ClippingPlane : MonoBehaviour
 		matList = new List<Material>();
 	}
 
+	
 	//execute every frame
 	void Update () {
 		//create plane

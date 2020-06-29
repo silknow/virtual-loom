@@ -35,9 +35,13 @@ public class ConfigureInputImage : MonoBehaviour
         if (!WizardController.instance.inputTexture) return;
         displayImage = WizardController.instance.inputTexture;
         GetComponent<RawImage>().texture = displayImage;
-        HomographyImage.getInstance().GetTextureFromReference();
-        HomographyImage.getInstance().GetComponent<ZoomImage>().UpdateRawImageAspect();
-        HomographyImage.getInstance().aspect = HomographyImage.getInstance().GetComponent<ZoomImage>().aspect;
-        aspectSlider.value = HomographyImage.getInstance().GetComponent<ZoomImage>().aspect;
+        GetComponent<ZoomImage>().UpdateRawImageAspect();
+        if (HomographyImage.getInstance())
+        {
+            HomographyImage.getInstance().GetTextureFromReference();
+            HomographyImage.getInstance().GetComponent<ZoomImage>().UpdateRawImageAspect();
+            HomographyImage.getInstance().aspect = HomographyImage.getInstance().GetComponent<ZoomImage>().aspect;
+            aspectSlider.value = HomographyImage.getInstance().GetComponent<ZoomImage>().aspect;
+        }
     }
 }

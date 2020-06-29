@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Irregular satin (rectangular weave unit) (7p.e.3,2,3)
   m_EditorClassIdentifier: 
   techniques: 0500000006000000
+  primaryName: ^irregular satin (rectangular weave unit)
+  code: ' (7p.e.3,2,3)'
+  translatedName: 
   type: 0
-  techniqueImage: {fileID: 21300000, guid: 8952fcdd2994e1c4d82dd7d99f0d68b0, type: 3}
-  techniqueName: Irregular satin (rectangular weave unit) (7p.e.3,2,3)
+  weavePattern: {fileID: 21300000, guid: 8952fcdd2994e1c4d82dd7d99f0d68b0, type: 3}

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1027548971845781321}
   - component: {fileID: 1027548971845781320}
   - component: {fileID: 1027548971845781323}
+  - component: {fileID: 2913738686199034206}
   m_Layer: 0
   m_Name: Thread
   m_TagString: Untagged
@@ -55,6 +56,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -94,9 +96,25 @@ MonoBehaviour:
   curve: {fileID: 0}
   r1: 0.015
   r2: 0.03
-  minR1: 0.01
-  minR2: 0.01
-  narrowingDistance: 0.09
+  minR1: 0.001
+  minR2: 0.001
+  narrowingDistance: 0.8
   samples: 5
   textureLength: 0.4
   angleInc: 0
+  bounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+--- !u!114 &2913738686199034206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1027548971845781322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7b17fe90e948cf43960085e4de52dc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  divisions: {x: 2, y: 2}

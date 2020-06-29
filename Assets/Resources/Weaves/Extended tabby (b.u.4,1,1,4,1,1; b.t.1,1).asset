@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Extended tabby (b.u.4,1,1,4,1,1; b.t.1,1)
   m_EditorClassIdentifier: 
   techniques: 0500000006000000
+  primaryName: ^extended tabby
+  code: 
+  translatedName: 
   type: 1
-  techniqueImage: {fileID: 21300000, guid: 9d7e486d62aa40d41b112d468189381c, type: 3}
-  techniqueName: 'Extended tabby (b.u.4,1,1,4,1,1; b.t.1,1) '
+  weavePattern: {fileID: 21300000, guid: 9d7e486d62aa40d41b112d468189381c, type: 3}

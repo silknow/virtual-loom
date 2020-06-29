@@ -3,12 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using ARTEC.Curves;
+using OpenCVForUnity.CoreModule;
+using OpenCVForUnity.ImgprocModule;
+using OpenCVForUnity.UnityUtils;
 
 [Serializable]
 public class Pictorical
 {
     public Curve curve;
     public Pattern drawing;
+    public Color debugColor=Color.black;
     public ScriptableYarn yarn;
     public bool adjusted=true;
     public int healedStep = -1;
@@ -17,13 +21,46 @@ public class Pictorical
     public int[] firstPoint { set; get; }
     public int[] lastPoint{ set; get; }
 
+    public List<Pictorical> processedPictorials;
 
+    public Pictorical()
+    {}
+    
+    Pictorical(Pictorical copy, Mat mat)
+    {
+        if (copy.curve == null)
+            curve = null;
+        else 
+            GameObject.Instantiate(copy.curve);
+        drawing = new Pattern(copy.drawing);
+        debugColor = copy.debugColor;
+        yarn = copy.yarn;
+        adjusted = copy.adjusted;
+        healedStep = copy.healedStep;
+        healedStepGap = copy.healedStepGap;
+        doubleHealed = copy.doubleHealed;
+        if (firstPoint == null)
+            copy.firstPoint = null;
+        else 
+            Array.Copy(firstPoint,copy.firstPoint,copy.firstPoint.Length);
+        if (lastPoint == null)
+            copy.lastPoint = null;
+        else
+            Array.Copy(lastPoint,copy.lastPoint,copy.lastPoint.Length);
+        
+        Utils.matToTexture2D(mat,  drawing.pattern);
+
+    }
     public int CalculateBackDepth(Patch patch, int index, int column, int row)
     {
-        int acum = -1;
-        for (int i=0;i<index;i++)
-            if (patch.pictoricals[i].IsInBack(column,row))
-                acum--;
+        int acum = -2;
+        /*for (int i=0;i<index;i++)
+            foreach (var pp in patch.pictoricals[i].processedPictorials)
+                if (pp.IsInBack(column, row))
+                {
+                    acum--;
+                    break;
+                }*/
         return acum;
     }
 
@@ -65,6 +102,61 @@ public class Pictorical
                     lastPoint[row] = resolution.x;
                 }
             }
+        }
+    }
+
+    internal void  Preprocess(Vector2Int dilatationSize, string prefix)
+    {
+        processedPictorials=new List<Pictorical>();
+        //Not adjusted pictoricals are an unique espolin
+        if (!adjusted)
+        {
+            processedPictorials.Add(this);  
+            return;
+        }
+        else
+            SeparateByContours(dilatationSize, prefix);
+        
+    }
+
+    private void SeparateByContours(Vector2Int dilatationSize, string prefix)
+    {
+        Size size= new Size((int) (drawing.pattern.width ), (int) (drawing.pattern.height));
+        Mat matOrig = new Mat(drawing.pattern.height,drawing.pattern.width,CvType.CV_8UC1);
+        Mat matDilate = new Mat(drawing.pattern.height,drawing.pattern.width,CvType.CV_8UC1);
+        Imgproc.threshold(matOrig, matOrig, 128, 255, Imgproc.THRESH_BINARY);
+        Mat dilateElement = Imgproc.getStructuringElement (Imgproc.MORPH_RECT, new Size (dilatationSize.x, dilatationSize.y));
+        Utils.texture2DToMat(drawing.pattern,matOrig);
+        Imgproc.dilate(matOrig, matDilate,dilateElement);
+        List<MatOfPoint> contours = new List<MatOfPoint>();
+        Mat srcHierarchy = new Mat ();
+        Imgproc.findContours(matDilate,contours,srcHierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
+        int i = 0;
+        foreach (var contour in contours)
+        {
+            double area = Imgproc.contourArea(contour);
+            //Debug.Log("Area contorno: "+area);
+            Mat matContour = Mat.zeros(drawing.pattern.height,drawing.pattern.width,CvType.CV_8UC1);
+            Mat matContour2 = Mat.zeros(drawing.pattern.height,drawing.pattern.width,CvType.CV_8UC1);
+            Imgproc.drawContours(matContour,contours,i,new Scalar(255,0,0),-1);
+            Imgproc.drawContours(matContour2,contours,i,new Scalar(255,0,0),2);
+            Core.bitwise_and(matOrig,matContour,matContour);
+            Pictorical p = new Pictorical(this,matContour);
+            if (area > 30)
+            {
+                //OpenCVForUnity.ImgcodecsModule.Imgcodecs.imwrite(prefix + " contour" + i + "(area " + area + ").png",
+                //    matContour);
+                //OpenCVForUnity.ImgcodecsModule.Imgcodecs.imwrite(prefix + " contour" + i + "(area " + area + ")2.png",
+                //    matContour2);
+                processedPictorials.Add(p);
+            }
+            else
+            {
+                //OpenCVForUnity.ImgcodecsModule.Imgcodecs.imwrite(prefix + " contour" + i + "(area " + area + ")-descartado.png",
+                //    matContour);
+            }
+
+            i++;
         }
     }
 }

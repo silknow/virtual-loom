@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Twill (5e.1 b.3,3)
   m_EditorClassIdentifier: 
   techniques: 0500000006000000
+  primaryName: ^twill
+  code: ' (5e.1 b.3,3)'
+  translatedName: 
   type: 2
-  techniqueImage: {fileID: 21300000, guid: 6c1a0d54178eea24ca9fcf660b095a72, type: 3}
-  techniqueName: Twill (5e.1 b.3,3)
+  weavePattern: {fileID: 21300000, guid: 6c1a0d54178eea24ca9fcf660b095a72, type: 3}

@@ -50,10 +50,14 @@ public class LoadImageDialog : MonoBehaviour, IPointerDownHandler {
     private IEnumerator OutputRoutine(string url) {
         var loader = new WWW(url);
         yield return loader;
-        var tex  = loader.texture;
         
-        WizardController.instance.inputTexture = tex as Texture2D;
+        //var tex  = loader.texture;
+        WizardController.instance.inputTexture = new Texture2D(1024,1024,TextureFormat.RGB24,false);
+        loader.LoadImageIntoTexture(WizardController.instance.inputTexture);
+        //WizardController.instance.inputTexture = tex as Texture2D;
+        WizardController.instance.posterizeResult = null;
         FirstTabManager.instance.imgIsLoaded = true;
+        FirstTabManager.instance.ChangeToSecondTab();
     }
     
 }
