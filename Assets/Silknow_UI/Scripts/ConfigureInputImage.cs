@@ -23,6 +23,7 @@ public class ConfigureInputImage : MonoBehaviour
         GetComponent<RectTransform>().anchorMin = Vector2.zero;
         GetComponent<RectTransform>().anchorMax = Vector2.one;
         displayImage = tex;
+        WizardController.instance.inputTexture = tex;
         GetComponent<ZoomImage>().UpdateRawImageAspect();
         HomographyImage.getInstance().GetTextureFromReference();
         HomographyImage.getInstance().GetComponent<ZoomImage>().UpdateRawImageAspect();

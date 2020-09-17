@@ -104,7 +104,9 @@ public class ZoomImage : MonoBehaviour, IScrollHandler
     
         if (GetComponent<AspectRatioFitter>())
         {
+            GetComponent<AspectRatioFitter>().enabled = true;
             GetComponent<AspectRatioFitter>().aspectRatio = aspect;
+            StartCoroutine(DisableAspectRatio());
            
         }
     }
@@ -119,10 +121,30 @@ public class ZoomImage : MonoBehaviour, IScrollHandler
                 aspect = (float) rim.texture.width / (float) rim.texture.height;
                 if (GetComponent<AspectRatioFitter>())
                 {
+                    GetComponent<AspectRatioFitter>().enabled = true;
                     GetComponent<AspectRatioFitter>().aspectRatio = aspect;
                     GetComponent<AspectRatioFitter>().aspectMode = AspectRatioFitter.AspectMode.FitInParent;
+                    StartCoroutine(DisableAspectRatio());
                 }
             }
         }
     }
+
+    private IEnumerator DisableAspectRatio()
+    {
+        yield return new WaitForSeconds(0.5f);
+        GetComponent<AspectRatioFitter>().enabled = false;
+    }
+    private void OnRectTransformDimensionsChange()
+    {
+        // The RectTransform has changed!
+        if (gameObject.activeInHierarchy && GetComponent<AspectRatioFitter>())
+        {
+            GetComponent<AspectRatioFitter>().enabled = true;
+            GetComponent<AspectRatioFitter>().aspectRatio = aspect;
+            StartCoroutine(DisableAspectRatio());
+           
+        }
+    }
+
 }

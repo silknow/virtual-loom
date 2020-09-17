@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 
 public class MoveHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
@@ -12,10 +13,17 @@ public class MoveHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     private RectTransform m_DraggingPlane;
 
+    private Image _image;
+
+    public Sprite pressedSprite;
+
+    private Sprite _defaultSprite;
+
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
+        _image = GetComponent<Image>();
+        _defaultSprite = _image.sprite;
     }
 
     // Update is called once per frame
@@ -28,7 +36,8 @@ public class MoveHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         // var canvas = FindInParents<Canvas>(gameObject);
         // if (canvas == null)
         //     return;
-        
+        if(pressedSprite!= null)
+            _image.sprite = pressedSprite;
     }
 
     public void OnDrag(PointerEventData data) {
@@ -68,7 +77,9 @@ public class MoveHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         // Debug.Log(rect.width);
     }
 
-    public void OnEndDrag(PointerEventData eventData) {
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        _image.sprite = _defaultSprite;
     }
 
 }

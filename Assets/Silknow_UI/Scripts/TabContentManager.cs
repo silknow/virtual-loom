@@ -12,5 +12,9 @@ public class TabContentManager : MonoBehaviour
       WizardController.instance.selectedTab = tab;
       if(tab ==0)
          FirstTabManager.instance.imgIsLoaded = false;
+      if (tab != 4)
+      {
+         WizardController.instance.SetVisualizationState(false);
+      }
    }
 }

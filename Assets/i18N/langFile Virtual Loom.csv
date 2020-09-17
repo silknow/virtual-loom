@@ -1,0 +1,37 @@
+Lang Code	EN	ES	FR	IT	URI	ATTRIBUTE
+^language	LANGUAGE	IDIOMA	LANGUE	LINGUA		
+^load_Image	Load Image	Carga de Imagen	Charger une image	Carica un'immagine		
+^select	Select	Selecciona	Choisir	Scegliere		
+^next	Next	Siguiente	Suivant	Successivo		
+^homography	Perspective correction	Corrección de perspectiva	Correction de la perspective	Correzione della prospettiva		
+^posterize	Image Processing	Procesado de Imagen	Traitement d'image	Elaborazione di immagiie		
+^yarns	Yarns	Hilos	Fil	Filo		
+^visualization	Visualization	Visualización	Visualisation	Visualizzazione		
+^select the image to work with it in Virtual  Loom.	Select the image to work with it in Virtual  Loom.	Selecciona la imagen con la que trabajar en Virtual Loom.	Sélectionnez l'image avec laquelle travailler dans Virtual Loom.	Seleziona l'immagine per lavorarci con Virtual Loom.		
+^select your prefered language.	Select your prefered language.	Selecciona el lenguaje deseado.	Sélectionnez votre langue préférée.	Seleziona la tua lingua preferita.		
+^move the handlers to adjust Image perspective.Use aspect slider to change aspect ratio.	Move the handlers to adjust Image perspective.\nUse aspect slider to change aspect ratio.	Mueve los manejadores para ajustar la perspectiva de la imagen.\nDesplaza la barra de la proporción para ajustarla.	Déplacez les gestionnaires pour régler la perspective de l'image. \nUtilisez le curseur d'aspect pour modifier le rapport hauteur / largeur.	Spostare i gestori per regolare la prospettiva dell'immagine. \nUtilizzare il dispositivo di scorrimento per modificare le proporzioni.		
+^aspect:	Aspect:	Proporción:	Proportion:	Proporzione:		
+^select the technique to posterize the image based on the desired number of clusters.	Select the technique to posterize the image based on the desired number of clusters.	Selecciona la técnica para posterizar la imagen basado en el número de zonas deseadas.	Sélectionnez la technique pour postériser l'image en fonction du nombre souhaité de grappes.	Seleziona la tecnica per posterizzare l'immagine in base al numero desiderato di cluster.		
+^clusters:	Clusters:	Zonas:	Les zones:	Le zone:		
+^apply	Apply	Aplicar	Appliquer	Applicare		
+^select output color, type of yarns and weave to generate 3D representation of the textile.	Select output color, type of yarns and weave to generate 3D representation of the textile.	Selecciona el color final, el tipo de hilo y ligamento para generar la representación 3D de la tela.	Sélectionnez la couleur de sortie	 le type de fils et le tissage pour générer une représentation 3D du textile.		
+^background Zone:	Background Zone:	Área de fondo:	Zone de fond:	Zone de sfondo		
+^pictorial Zones:	Pictorial Zones:	Zonas pictóricas:	Zones picturales:	Zone pittoriche:		
+^background	Ground	Fondo	Fond	Sfondo		
+^generate 3D	Generate 3D	Generar 3D	Générer 3D	Genera 3D		
+^zone {0}	Zone {0}	Área {0}	Zone {0}	Zone {0}		
+^original	Original	Original	Original	Originale		
+^final	Final	Final	Final	Finale		
+^take Snapshot	Take Snapshot	Guarda captura de pantalla	Prendre un instantané	Scatta un'istantanea		
+^generate STL File	Generate STL File	Generar fichero STL	Générer fichier STL	Genera file STL		
+^PROCESSING...	PROCESSING...	PROCESANDO...	EN TRAITEMENT...	IN LAVORAZIONE...		
+^quality	Quality	Calidad	Qualité	Qualità		
+^low	Low	Baja	Faible	Bassa		
+^med	Med	Media	Moyenne	Media		
+^high	High	Alta	Haute	Alta		
+^rotate textile	Rotate Textile	Girar textil	Filer le textile	Ruotare il tessuto		
+^explode layers	Explode layers	Explotar capas	Exploser les couches	Esplodere i livelli		
+^settings	Settings	Ajustes	Paramètres	Impostazioni		
+^layers	Layers	Capas	Couches	Strati		
+^configure virtualLoom	VirtualLoom Settings	Parámetros de VirtualLoom	Paramètres de VirtualLoom	Impostazioni VirtualLoom		
+^explore the 3D model.	Explore the 3D model	Explora el model 3D	Explorez le modèle 3D	Esplora il modello 3D		

@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speedMultiplier: 0.5
   interpolation: 1
-  samples: 4
+  samples: 2
   _points: []
   _knotsDistance: []
 --- !u!114 &6417606269134591259

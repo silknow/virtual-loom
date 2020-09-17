@@ -81,6 +81,7 @@ public class Yarn : MonoBehaviour
             dictMaterial[attributes.color] = material;
         }
         return material;
+        
     }
     public void Start()
     {

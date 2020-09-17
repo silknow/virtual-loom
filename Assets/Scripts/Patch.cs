@@ -2,12 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+//using System.Windows.Forms;
 using UnityEngine;
 using ARTEC.Curves;
 using Parabox.STL;
 using UnityEditor;
 using UnityEngine.Experimental.Rendering;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class Patch : MonoBehaviour
 {
@@ -29,9 +31,8 @@ public class Patch : MonoBehaviour
     public ScriptableYarn warpYarn;
     public ScriptableYarn weftYarn;
 
-    public List<Pictorical> pictoricals;
-    public List<Pictorical> procesedPictorials;
-    public int[,] depth;
+    public List<Pictorial> pictorials;
+    //public int[,] depth;
     public float explodeLevel = 0.0f;
     
     public Bounds bounds;
@@ -40,8 +41,8 @@ public class Patch : MonoBehaviour
     public void Awake()
     {
         explodeLevel = 0;
-        if (pictoricals==null)
-            pictoricals = new List<Pictorical>();
+        if (pictorials==null)
+            pictorials = new List<Pictorial>();
     }
     
     public bool valueAtPixel(int column, int row)
@@ -83,9 +84,9 @@ public class Patch : MonoBehaviour
             transform.GetChild(index).gameObject.SetActive(visible);
     }
     
-    public bool pictoricalValueAtPixel(Pictorical p, int colunm, int row, out bool healed)
+    public bool pictoricalValueAtPixel(YarnPictorial p, int colunm, int row, out bool healed)
     {
-        bool frontFace = p.drawing.Value(colunm, row);
+        bool frontFace = p.Value(colunm, row);
         healed = false;
         if (pictoricalHealed(p,colunm,row))
         {
@@ -98,7 +99,7 @@ public class Patch : MonoBehaviour
         return frontFace;
     }
 
-    public bool pictoricalHealed(Pictorical p, int column, int row)
+    public bool pictoricalHealed(YarnPictorial p, int column, int row)
     {
         bool healed=false;
         if (p.healedStep != -1)
@@ -233,122 +234,122 @@ public class Patch : MonoBehaviour
 
     private void WeavePictorical(int index,Rect rect)
     {
-        Pictorical pictorical = pictoricals[index];
+        Pictorial pictorial = pictorials[index];
         int i = 0;
         GameObject go = new GameObject();
         Transform p = go.transform;
         go.name = "Pictorical"+index;
         p.parent = transform;
-        foreach (var pp in pictorical.processedPictorials)
+        foreach (var pp in pictorial.processedPictorials)
         {
-            WeavePictoricalEspolin(pictorical,p,i++,rect);
+            WeavePictoricalEspolin(pictorial,p,i++,rect);
         }
     }
 
-    private void WeavePictoricalEspolin(Pictorical pictorial,Transform parent,int index,Rect rect)
+    private void WeavePictoricalEspolin(Pictorial pictorial,Transform parent,int index,Rect rect)
     {
-        Pictorical pictorical = pictorial.processedPictorials[index];
+        YarnPictorial yarnPictorial = pictorial.processedPictorials[index];
+        yarnPictorial.Prepare();
         // // Create each horizontal yarm (pictorical)
         GameObject go = Instantiate(Resources.Load("Yarn"),parent) as GameObject;
-        pictorical.curve = go.GetComponent<Curve>();
-        pictorical.curve.speedMultiplier *= gap.x;
+        yarnPictorial.curve = go.GetComponent<Curve>();
+        yarnPictorial.curve.speedMultiplier *= gap.x;
         go.name = "P"+index;
         Yarn yarn=go.GetComponent<Yarn>();
-        yarn.attributes = pictorical.yarn;
+        yarn.attributes = yarnPictorial.yarn;
         //Just for debug
-        if (pictorical.debugColor != Color.black)
-            yarn.attributes.color = pictorical.debugColor;
+        if (yarnPictorial.debugColor != Color.black)
+            yarn.attributes.color = yarnPictorial.debugColor;
         
         for (int row = (int)rect.yMin; row < rect.yMax; row++)
         {
-            if (pictorical.firstPoint[row]!=-1 && (pictorical.lastPoint[row]-pictorical.firstPoint[row])>2)
+            if (yarnPictorial.firstPoint[row]!=-1 && (yarnPictorial.lastPoint[row]-yarnPictorial.firstPoint[row])>2)
             {
-                bool currentUpDown = false;
+                bool lastUpDown = false;
                 bool healed,healed2;
                 // For each cross with a vertical yarm (warp)
                 if ((row%2)==0)
                 {
-                    for (var column = pictorical.firstPoint[row]; column <= pictorical.lastPoint[row]; column++)
+                    for (var column = yarnPictorial.firstPoint[row]; column <= yarnPictorial.lastPoint[row]; column++)
                     {
-                        bool upDown = pictoricalValueAtPixel(pictorical,column, row,out healed);
-                        bool nextUpDown = pictoricalValueAtPixel(pictorical,column + 1, row,out healed2);
+                        bool upDown = pictoricalValueAtPixel(yarnPictorial,column, row,out healed);
+                        bool nextUpDown = pictoricalValueAtPixel(yarnPictorial,column + 1, row,out healed2);
 
                         // If the yarm doesn't change is not neccesary a control point
-                        if ((column != pictorical.firstPoint[row]) && (column != pictorical.lastPoint[row] - 1) && column<resolution.x-1)
-                            if ((upDown == currentUpDown) && (upDown == nextUpDown)  && depth[column,row] == depth[column+1,row])
+                        if ((column != yarnPictorial.firstPoint[row]) && (column != yarnPictorial.lastPoint[row] - 1) && column<resolution.x-1)
+                            if ((upDown == lastUpDown) && (upDown == nextUpDown) )// && depth[column,row] == depth[column+1,row])
                                 continue;
                         float up;
                         if (upDown)
                             up = 2.0f;
                         else
-                            up = pictorical.CalculateBackDepth(this,index,column,row);
+                            up = yarnPictorial.CalculateBackDepth(this,index,column,row);
                         if (healed) up *=0.2f;
-                        pictorical.curve.AddControlPoint(
+                        yarnPictorial.curve.AddControlPoint(
                             new Vector3(
                                 (column - rect.x - rect.width * 0.5f) * gap.x,
                                 up * gap.y * 0.5f,
                                 (row - rect.y - rect.height * 0.5f) * gap.z),
                             Quaternion.LookRotation(Vector3.right, Vector3.forward),
-                            currentUpDown != upDown,
+                            lastUpDown != upDown,
                             "Control Point_"+row+"_"+column+" "+healed);
                     
-                        currentUpDown = upDown;
+                        lastUpDown = upDown;
                     }
                 }
                 else
                 {
-                    for (var column = pictorical.lastPoint[row]; column >= pictorical.firstPoint[row]; column--)
+                    for (var column = yarnPictorial.lastPoint[row]; column >= yarnPictorial.firstPoint[row]; column--)
                     {
-                        bool upDown = pictoricalValueAtPixel(pictorical,column, row,out healed);
-                        bool nextUpDown = pictoricalValueAtPixel(pictorical,column - 1, row,out healed2);
+                        bool upDown = pictoricalValueAtPixel(yarnPictorial,column, row,out healed);
+                        bool nextUpDown = pictoricalValueAtPixel(yarnPictorial,column - 1, row,out healed2);
                         // If the yarm doesn't change is not neccesary a control point
-                        if ((column != pictorical.firstPoint[row]) && (column != pictorical.lastPoint[row] - 1) && column!=resolution.x && column!=0)
-                            if ((upDown == currentUpDown) && (upDown == nextUpDown) && depth[column,row] == depth[column-1,row])
+                        if ((column != yarnPictorial.firstPoint[row]) && (column != yarnPictorial.lastPoint[row] - 1) && column!=resolution.x && column!=0)
+                            if ((upDown == lastUpDown) && (upDown == nextUpDown))// && depth[column,row] == depth[column-1,row])
                                 continue;
                         float up;
                         if (upDown)
                             up = 2.0f;
                         else
-                            up = pictorical.CalculateBackDepth(this,index,column,row);
+                            up = yarnPictorial.CalculateBackDepth(this,index,column,row);
                         if (healed) up *=0.2f;
-                        pictorical.curve.AddControlPoint(
+                        yarnPictorial.curve.AddControlPoint(
                             new Vector3(
                                 (column - rect.x - rect.width * 0.5f) * gap.x,
                                 up * gap.y * 0.5f,
                                 (row - rect.y - rect.height * 0.5f) * gap.z),
                             Quaternion.LookRotation(Vector3.left, Vector3.back),
-                            currentUpDown != upDown,
+                            lastUpDown != upDown,
                             "Control Point_"+row+"_"+column+" "+healed);
                     
-                        currentUpDown = upDown;
+                        lastUpDown = upDown;
                     }
                 }
             }
         }
         yarn.UpdateMesh();
         bounds.Encapsulate(yarn.bounds);
+        yarnPictorial.ReleaseMem();
         //Split mesh
         //go.GetComponentInChildren<SplitMeshRenderer>().Split();
     }
-    private void calculateBackDepth(int column, int row)
+    /*private void calculateBackDepth(int column, int row)
     {
-        foreach (var p in pictoricals)
+        foreach (var p in pictorials)
             foreach (var pp in p.processedPictorials)
             {
                 if (pp.IsInBack(column,row))
                         depth[column,row]--;
             }
-    }
+    }*/
 
     private void ReducePatterns()
     {
         backgroundPattern.reducePattern(divider,gap.x/gap.z,true);
         technique.reduced_pattern=technique.pattern; //Copy pattern to reduced_pattern to work with reduced
-        foreach (var p in pictoricals)
+        foreach (var p in pictorials)
         {
-            p.drawing.reducePattern(divider, gap.x / gap.z,true);
-            foreach (var pp in p.processedPictorials)
-                pp.drawing.reducePattern(divider, gap.x / gap.z,true);
+            p.drawing.reducePattern(divider, gap.x / gap.z, true);
         }
     }
 
@@ -378,29 +379,45 @@ public class Patch : MonoBehaviour
 
         CleanAll();
 
-        PreprocessPictorials();
         
         if (backgroundPattern == null)
             return;
 
-        if (divider < 0.0f) //If divider is negative, we adjust it to 200 yarns of warp
-            divider = Mathf.Max(1,backgroundPattern.getOriginalResolution().x / 200.0f);
+        float numYarns = 100;
+        switch (PlayerPrefs.GetInt("Quality"))
+        {
+            case 0:
+                numYarns = 100;
+                break;
+            case 1:
+                numYarns = 200;
+                break;
+            case 2:
+                numYarns = 400;
+                break;
+        }
+        divider = Mathf.Max(1,backgroundPattern.getOriginalResolution().x / numYarns);
+        
         ReducePatterns();
+        
+        PreprocessPictorials();
+
         //transform.localScale = Vector3.one / divider;
         resolution.x = (int)(backgroundPattern.getResolution().x);
         resolution.y = (int)(backgroundPattern.getResolution().y); 
         
-        foreach (var p in pictoricals)
+        foreach (var p in pictorials)
             foreach (var pp in p.processedPictorials)
                 pp.CalculateFirstAndLastPointOfRows(resolution);
         //Init depth buffer for back pictoricals
-        depth=new int[resolution.x,resolution.y];
+        /*depth=new int[resolution.x,resolution.y];
         for (int i=0;i<resolution.x;i++)
             for (int j=0;j<resolution.y;j++)
-                depth[i, j] = -1;
-        for (int i=0;i<resolution.x;i++)
+                depth[i, j] = -1;*/
+        //Comentado porque genera gran cantidad de geometría para poco efecto visual
+        /*for (int i=0;i<resolution.x;i++)
             for (int j=0;j<resolution.y;j++)
-                calculateBackDepth(i,j);
+                calculateBackDepth(i,j);*/
         
         Rect rect = new Rect(Vector2.zero,resolution);
         
@@ -408,7 +425,7 @@ public class Patch : MonoBehaviour
         gap.y = warpYarn.threadSize  * 2*compactnessY;
         WeaveWeft(rect);
         
-        for (int i=0;i<pictoricals.Count;i++)
+        for (int i=0;i<pictorials.Count;i++)
             WeavePictorical(i,rect);
         
         // Update box collider
@@ -427,14 +444,16 @@ public class Patch : MonoBehaviour
             );
         }
 
-        //PrepareMapsCameras();
+        PrepareMapsCameras();
         PrepareStlModel();
+
+        RenderPreparedCameras();
+
     }
     private void PreprocessPictorials()
     {
-        procesedPictorials=new List<Pictorical>();
         int i = 0;
-        foreach (var pictorical in pictoricals)
+        foreach (var pictorical in pictorials)
         { 
             pictorical.Preprocess(dilatationSize,""+i++);
         }
@@ -480,8 +499,6 @@ public class Patch : MonoBehaviour
         stlNode.heightMult = bounds.extents.y/bounds.extents.x*divider;
           
         frontCamera.Render();
-
-
     }
     public void PrepareMapsCameras()
     {
@@ -500,35 +517,46 @@ public class Patch : MonoBehaviour
         
         var resX = backgroundPattern.getOriginalResolution().x;
         var resY = backgroundPattern.getOriginalResolution().y;
-        textureResolution.x = resX * mapsGeneratorNode.resolutionMultiplier;
-        textureResolution.y = resY * mapsGeneratorNode.resolutionMultiplier;
+        textureResolution.x = mapsGeneratorNode.resolution;
+        textureResolution.y = mapsGeneratorNode.resolution;
         float aspect = 1.0f*resX / resY;
         if (textureResolution.x == stlNode.resolution && aspect>1.0f)
             textureResolution.y = (int)Math.Round(textureResolution.x /aspect);
         else if (textureResolution.y == stlNode.resolution)
             textureResolution.x = (int)Math.Round(textureResolution.y *aspect);
         
-        RenderTexture rt = new RenderTexture(textureResolution.x,textureResolution.y,24,RenderTextureFormat.Depth);
+        RenderTexture rt = new RenderTexture(textureResolution.x,textureResolution.y,24,RenderTextureFormat.ARGB32);
         frontCamera.targetTexture = rt;
         float v = bounds.center.y + bounds.extents.y + frontCamera.nearClipPlane;
         frontCamera.transform.localPosition =
             Vector3.up * v;
         frontCamera.farClipPlane = Mathf.Abs(v);
-      
-        rt = new RenderTexture(textureResolution.x,textureResolution.y,24,RenderTextureFormat.Depth);
+        CameraControl.instance.mmrImage.texture = rt;
+        CameraControl.instance.setAspect(aspect);
+        
+
+        rt = new RenderTexture(textureResolution.x,textureResolution.y,24,RenderTextureFormat.ARGB32);
         backCamera.targetTexture = rt;
         v = bounds.center.y - bounds.extents.y - backCamera.nearClipPlane;
         backCamera.transform.localPosition =
             Vector3.up * v;
         backCamera.farClipPlane = Mathf.Abs(v);
-          
+
         frontCamera.Render();
         backCamera.Render();
-
-
+        
     }
 
-    
+    public void RenderPreparedCameras()
+    {
+        //Sólo se llama a una cámara porque cuando una termina llama a la siguiente.
+        //Si se llaman una detrás de otra no funciona correctamente
+        stlNode.frontCamera.Render(); 
+    }
+    public void setYarnActive(int i, bool active)
+    {
+        transform.GetChild(i).gameObject.SetActive(active);
+    }
     public void export_STL(string path)
     {
         stlNode.path = path;

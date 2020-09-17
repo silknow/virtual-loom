@@ -46,8 +46,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speedMultiplier: 0
   interpolation: 1
-  samples: 4
-  controlPoints: []
+  samples: 2
+  _points: []
+  _knotsDistance: []
 --- !u!114 &6417606269134591259
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61,5 +62,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attributes: {fileID: 11400000, guid: 12cfe1d2731063745b352deee2f89cba, type: 2}
-  threadPrefab: {fileID: 1027548971845781322, guid: 05f7a81ff7a94d9449eebdd4e85bf547,
-    type: 3}
+  m: {fileID: 0}
+  bounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}

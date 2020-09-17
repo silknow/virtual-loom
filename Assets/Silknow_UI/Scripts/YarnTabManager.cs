@@ -47,6 +47,9 @@ public class YarnTabManager : MonoBehaviour
             GameObject.Destroy(child.gameObject);
         }
 
+        // Jesús: set the labels matrix texture
+        setLabelsMatrix();
+
         WizardController.instance.yarnPanels.Clear();
         for (int i = 0; i < WizardController.instance.clusterList.Count; i++)
         {
@@ -82,6 +85,11 @@ public class YarnTabManager : MonoBehaviour
 
         bindingWarpToggle.GetComponent<Toggle>().isOn = false;
         bindingWarpToggle.SetActive(WizardController.instance.selectedTechniqueRestrictions.allowedBindingWarp);
+
+        
+        //Pablo: Prueba 
+        updateYarnColors();
+        
     }
 
     public void Activate3DButton()
@@ -96,25 +104,72 @@ public class YarnTabManager : MonoBehaviour
     {
         if(!yarnsReady)
             return;
-        var tex = new Texture2D(WizardController.instance.posterizeResult.width,WizardController.instance.posterizeResult.height,TextureFormat.RGB24,false,false);
+        // var tex = new Texture2D(WizardController.instance.posterizeResult.width,WizardController.instance.posterizeResult.height,TextureFormat.RGB24,false,false);
         
-        int rows = 0;
-        for(int x = 0; x < tex.height; x++) {
-            for(int y = 0; y < tex.width; y++) {
-                int label = (int)WizardController.instance.labelsMatrix.get(rows, 0)[0];
-                Color c = WizardController.instance.yarnPanels[label].GetComponent<YarnPanel>().outputColor;
-                //dst.put(y, x, b,g,r);
-                tex.SetPixel(y,x,new Color(c.r/1.0f,c.g/1.0f,c.b/1.0f));
-                rows++;
-            }
-        }
+        // int rows = 0;
+        // for(int x = 0; x < tex.height; x++) {
+        //     for(int y = 0; y < tex.width; y++) {
+        //         int label = (int)WizardController.instance.labelsMatrix.get(rows, 0)[0];
+        //         Color c = WizardController.instance.yarnPanels[label].GetComponent<YarnPanel>().outputColor;
+        //         tex.SetPixel(y,x,c);
+        //         rows++;
+        //     }
+        // }
 
-        tex.Apply();
-        imageGenerated.texture = tex;
+        // tex.Apply();
+        // imageGenerated.texture = tex;
+
+        // Jesús: set new colors
+        updateYarnColors();
     }
 
     public void ToggleBindingWarp(bool value)
     {
         WizardController.instance.bindingWarp = value;
+    }
+
+    // Jesús: method to apply the labelsMatrix to the image
+    private void setLabelsMatrix() {
+
+        int w = WizardController.instance.posterizeResult.width;
+        int h = WizardController.instance.posterizeResult.height;
+        // Create a texture with only 1 channel (8-bit) to store the label of each pixel 
+        var tex = new Texture2D(w,h,TextureFormat.RGB24,false,false);
+        tex.filterMode = FilterMode.Point;
+        
+        int rows = 0;
+        Color[] pixels = new Color[w*h]; 
+        for(int x = 0; x < h; x++) {
+            for(int y = 0; y < w; y++) {
+                int label = (int)WizardController.instance.labelsMatrix.get(rows, 0)[0];
+                pixels[rows] = new Color(label/255.0f,0,0,1);;
+                rows++;
+            }
+        }
+        tex.SetPixels(0,0,w,h,pixels);
+        tex.Apply();
+        imageGenerated.texture = tex;
+        Resources.UnloadUnusedAssets();
+    }
+
+    private void updateYarnColors() {
+        var colors = new Color[30];
+        for (int i=0;i<WizardController.instance.yarnPanels.Count;i++) {
+            colors[i] = WizardController.instance.yarnPanels[i].GetComponent<YarnPanel>().outputColor;
+        }
+        imageGenerated.material.SetColorArray("_Colors", colors);
+    }
+    public void HighlightSelectedYarn(YarnPanel selectedPanel, bool selected)
+    {
+        if(!selected)
+            imageGenerated.material.SetInt("_SelectedYarn", -1);
+        else
+        {
+            int label = WizardController.instance.yarnPanels.IndexOf(selectedPanel);
+            imageGenerated.material.SetInt("_SelectedYarn", label);
+            imageGenerated.material.SetFloat("_SelectedTime", Time.time);
+
+        }
+        
     }
 }

@@ -132,6 +132,7 @@ public class CurvePipeRenderer : MonoBehaviour {
 	    }
 		
 	    // Create the mesh and assign it to the mesh filter component
+	    _mesh.Clear();
 	    _mesh.vertices = vertex;
 	    _mesh.normals = normal;
 	    _mesh.uv = uv;

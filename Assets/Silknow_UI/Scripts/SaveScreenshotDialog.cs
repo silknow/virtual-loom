@@ -10,7 +10,9 @@ using UnityEngine.EventSystems;
 using SFB;
 
 [RequireComponent(typeof(Button))]
-public class SaveScreenshotDialog : MonoBehaviour, IPointerDownHandler {
+public class SaveScreenshotDialog : MonoBehaviour, IPointerDownHandler
+{
+    private Camera _mainCamera;
 
 #if UNITY_WEBGL && !UNITY_EDITOR
     //
@@ -68,6 +70,7 @@ public class SaveScreenshotDialog : MonoBehaviour, IPointerDownHandler {
     void Start() {
         var button = GetComponent<Button>();
         button.onClick.AddListener(OnClick);
+        _mainCamera = CameraControl.instance.GetComponentInChildren<Camera>();
     }
 
     public void OnClick()
@@ -88,13 +91,13 @@ public class SaveScreenshotDialog : MonoBehaviour, IPointerDownHandler {
         RenderTexture renderTexture = new RenderTexture(w, h, 24);
         Texture2D texture = new Texture2D(w, h, TextureFormat.RGBA32, false);
  
-        Camera.main.targetTexture = renderTexture;
-        Camera.main.Render();
+        _mainCamera.targetTexture = renderTexture;
+        _mainCamera.Render();
  
         RenderTexture.active = renderTexture;
         texture.ReadPixels(rect, 0, 0);
  
-        Camera.main.targetTexture = null;
+        _mainCamera.targetTexture = null;
         RenderTexture.active = null;
         Destroy(renderTexture);
         

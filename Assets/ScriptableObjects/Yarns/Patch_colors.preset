@@ -1,0 +1,483 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!181963792 &2655988077585873504
+Preset:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Patch_colors
+  m_TargetType:
+    m_NativeTypeID: 114
+    m_ManagedTypePPtr: {fileID: 11500000, guid: af7f1e8affd23394499c54ccdade84bf,
+      type: 3}
+    m_ManagedTypeFallback: 
+  m_Properties:
+  - target: {fileID: 0}
+    propertyPath: m_Enabled
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorHideFlags
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorClassIdentifier
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: resolution.x
+    value: 450
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: resolution.y
+    value: 168
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: divider
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: gap.x
+    value: 0.044800002
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: gap.y
+    value: 0.098
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: gap.z
+    value: 0.080000006
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: compactness
+    value: 0.4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: compactnessY
+    value: 0.7
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: backgroundPattern.reduced_pattern
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: backgroundPattern.pattern
+    value: 
+    objectReference: {fileID: 2800000, guid: 42bfefcb2ecea9149b71ed60bedd4f6e, type: 3}
+  - target: {fileID: 0}
+    propertyPath: technique.reduced_pattern
+    value: 
+    objectReference: {fileID: 2800000, guid: f19fbc544d683437981bcd5884af104c, type: 3}
+  - target: {fileID: 0}
+    propertyPath: technique.pattern
+    value: 
+    objectReference: {fileID: 2800000, guid: f19fbc544d683437981bcd5884af104c, type: 3}
+  - target: {fileID: 0}
+    propertyPath: warpYarn
+    value: 
+    objectReference: {fileID: 11400000, guid: 12cfe1d2731063745b352deee2f89cba, type: 2}
+  - target: {fileID: 0}
+    propertyPath: weftYarn
+    value: 
+    objectReference: {fileID: 11400000, guid: c7e0a6fc36e753e4186e5ec4edba4ca2, type: 2}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.size
+    value: 8
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[0].curve
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[0].drawing.reduced_pattern
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[0].drawing.pattern
+    value: 
+    objectReference: {fileID: 2800000, guid: edb11555f85c3c04fa5d84202aa75179, type: 3}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[0].debugColor.r
+    value: 0.3835124
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[0].debugColor.g
+    value: 0.7169812
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[0].debugColor.b
+    value: 0.24688502
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[0].debugColor.a
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[0].yarn
+    value: 
+    objectReference: {fileID: 11400000, guid: f699dcdf28d644943abec146503705f0, type: 2}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[0].adjusted
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[0].healedStep
+    value: -1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[0].healedStepGap
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[0].doubleHealed
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[1].curve
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[1].drawing.reduced_pattern
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[1].drawing.pattern
+    value: 
+    objectReference: {fileID: 2800000, guid: 3f7d8f74e488ee54f8f72588b7110f3f, type: 3}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[1].debugColor.r
+    value: 0.6509434
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[1].debugColor.g
+    value: 0.49667147
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[1].debugColor.b
+    value: 0.19344072
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[1].debugColor.a
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[1].yarn
+    value: 
+    objectReference: {fileID: 11400000, guid: f699dcdf28d644943abec146503705f0, type: 2}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[1].adjusted
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[1].healedStep
+    value: -1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[1].healedStepGap
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[1].doubleHealed
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[2].curve
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[2].drawing.reduced_pattern
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[2].drawing.pattern
+    value: 
+    objectReference: {fileID: 2800000, guid: 9a8d2369d30369a47991e42db12628ee, type: 3}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[2].debugColor.r
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[2].debugColor.g
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[2].debugColor.b
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[2].debugColor.a
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[2].yarn
+    value: 
+    objectReference: {fileID: 11400000, guid: f699dcdf28d644943abec146503705f0, type: 2}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[2].adjusted
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[2].healedStep
+    value: -1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[2].healedStepGap
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[2].doubleHealed
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[3].curve
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[3].drawing.reduced_pattern
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[3].drawing.pattern
+    value: 
+    objectReference: {fileID: 2800000, guid: d49bf961af5657f4a9be284faa7ababe, type: 3}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[3].debugColor.r
+    value: 0.22921859
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[3].debugColor.g
+    value: 0.4811321
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[3].debugColor.b
+    value: 0.30273268
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[3].debugColor.a
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[3].yarn
+    value: 
+    objectReference: {fileID: 11400000, guid: f699dcdf28d644943abec146503705f0, type: 2}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[3].adjusted
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[3].healedStep
+    value: -1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[3].healedStepGap
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[3].doubleHealed
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[4].curve
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[4].drawing.reduced_pattern
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[4].drawing.pattern
+    value: 
+    objectReference: {fileID: 2800000, guid: 762f5462b65b95e4e941c6515c84cc1a, type: 3}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[4].debugColor.r
+    value: 0.29276434
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[4].debugColor.g
+    value: 0.4235546
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[4].debugColor.b
+    value: 0.4811321
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[4].debugColor.a
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[4].yarn
+    value: 
+    objectReference: {fileID: 11400000, guid: f699dcdf28d644943abec146503705f0, type: 2}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[4].adjusted
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[4].healedStep
+    value: -1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[4].healedStepGap
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[4].doubleHealed
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[5].curve
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[5].drawing.reduced_pattern
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[5].drawing.pattern
+    value: 
+    objectReference: {fileID: 2800000, guid: 8d4e8694376e2e64bb55e4c649afa871, type: 3}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[5].debugColor.r
+    value: 0.6132076
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[5].debugColor.g
+    value: 0.16487184
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[5].debugColor.b
+    value: 0.5525173
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[5].debugColor.a
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[5].yarn
+    value: 
+    objectReference: {fileID: 11400000, guid: f699dcdf28d644943abec146503705f0, type: 2}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[5].adjusted
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[5].healedStep
+    value: -1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[5].healedStepGap
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[5].doubleHealed
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[6].curve
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[6].drawing.reduced_pattern
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[6].drawing.pattern
+    value: 
+    objectReference: {fileID: 2800000, guid: eac779c7884b6194ab6e587b089f585e, type: 3}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[6].debugColor.r
+    value: 0.764151
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[6].debugColor.g
+    value: 0.52747536
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[6].debugColor.b
+    value: 0.24870951
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[6].debugColor.a
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[6].yarn
+    value: 
+    objectReference: {fileID: 11400000, guid: f699dcdf28d644943abec146503705f0, type: 2}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[6].adjusted
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[6].healedStep
+    value: -1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[6].healedStepGap
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[6].doubleHealed
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[7].curve
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[7].drawing.reduced_pattern
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[7].drawing.pattern
+    value: 
+    objectReference: {fileID: 2800000, guid: a75085fdd84e7ab4d8329502b51dbd37, type: 3}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[7].debugColor.r
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[7].debugColor.g
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[7].debugColor.b
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[7].debugColor.a
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[7].yarn
+    value: 
+    objectReference: {fileID: 11400000, guid: 9d8a0a1e1dfd8a747b9e1e4141096729, type: 2}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[7].adjusted
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[7].healedStep
+    value: -1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[7].healedStepGap
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pictoricals.Array.data[7].doubleHealed
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: explodeLevel
+    value: 0.69
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: frontCamera
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: backCamera
+    value: 
+    objectReference: {fileID: 0}

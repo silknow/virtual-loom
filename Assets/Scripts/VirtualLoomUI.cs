@@ -42,9 +42,9 @@ public class VirtualLoomUI : MonoBehaviour
 
     public void DropDownSelected()
     {
-        patch.technique.pattern = patterns[weaveTechniqueDropdown.value].pattern.texture;
-        patch.backgroundPattern.pattern = damasks[damaskDropdown.value].pattern.texture;
-
+        OpenCVForUnity.UnityUtils.Utils.texture2DToMat(patterns[weaveTechniqueDropdown.value].pattern.texture, patch.technique.pattern);
+        OpenCVForUnity.UnityUtils.Utils.texture2DToMat(patterns[damaskDropdown.value].pattern.texture, patch.backgroundPattern.pattern);
+        
         patch.Weave();
     }
 }

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Virtual Loom</title>
+	<script src="Build/UnityLoader.js"></script>
+	<script src="js/jquery-3.5.0.min.js"></script>
+	<script src="js/bootstrap.bundle.js"></script>
+	<script>
+		var gameInstance = UnityLoader.instantiate("gameContainer", "%UNITY_WEBGL_BUILD_URL%");
+		var scaleToFit;
+		try {
+			scaleToFit = !!JSON.parse("%UNITY_CUSTOM_SCALE_TO_FIT%");
+		} catch (e) {
+			scaleToFit = true;
+		}
+
+		function ChangeLanguage() {
+			var lang = $("#languageSelector").find("option:selected").val();
+			console.log(lang);
+			gameInstance.SendMessage("LanguageManager", "setLanguage", lang);
+		};
+		function SendMessagetoUnity() {
+			console.log("SendMessage");
+			gameInstance.SendMessage("VirtualLoomManager", "Init", document.getElementById("jsonMessage").value);
+
+		}
+	</script>
+	<style>
+		html,
+		body {
+			background: #000;
+			background: %UNITY_CUSTOM_BACKGROUND%;
+			width: 100%;
+			height: 100%;
+			overflow: visible;
+			padding: 0;
+			margin: 0;
+		}
+		label {
+			color: white;
+		}
+		.container{
+			padding: 10px 0px;
+		}
+
+	</style>
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-dark">
+
+<div class="container">
+	<div class="form-row">
+		<div class="form-group col-md-2">
+			<label>Choose Language</label>
+			<select class="custom-select mr-sm-2" onchange="ChangeLanguage()" id="languageSelector">
+				<option value="EN">English</option>
+				<option value="ES">Spanish</option>
+				<option value="IT">Italian</option>
+				<option value="FR">French</option>
+			</select>
+		</div>
+		<div class="form-group col-md-10">
+			<label class="text-light" for="exampleFormControlTextarea1">Write Json Message to Debug on Virtual
+				Loom.</label>
+			<textarea id="jsonMessage" class="form-control" id="exampleFormControlTextarea1"
+					  rows="3">{"language":"IT","imgUri":"https://silknow.eu/wp-content/uploads/2018/06/cropped-silknow-1.png","dimension":{"x":12.0,"y":8.0},"technique":"Damask","weaving":"Plain","backgroundColor":{"r":0.7075471878051758,"g":0.2302865833044052,"b":0.2302865833044052,"a":0.0},"materials":["Silk","Cotton"]}</textarea>
+		</div>
+	</div>
+	<div class="container d-flex justify-content-center"><button class="btn btn-info btn-lg"
+																 onclick="SendMessagetoUnity()">Send</button>
+	</div>
+
+</div>
+	<div class="container">
+		<div id="gameContainer" style="width: 100%; height: 720px"></div>
+	</div>
+</body>
+
+</html>

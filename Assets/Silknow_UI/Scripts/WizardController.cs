@@ -5,9 +5,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using OpenCVForUnity.CoreModule;
+using OpenCVForUnity.UnityUtils;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using UnityEngine.UI.Extensions.ColorPicker;
 
 public enum GeneralTechnique
 {
@@ -33,8 +35,8 @@ public class WizardController : Singleton<WizardController>
     public YarnPanel warpPanel;
     public List<YarnPanel> yarnPanels;
     
-    public List<Texture2D> imageProcessingResults;
-    public Texture2D backgroundWhiteTexture;
+    public List<Mat> imageProcessingResults;
+    public Mat backgroundWhiteTexture;
 
     public int clusterCount = 2;
 
@@ -50,8 +52,9 @@ public class WizardController : Singleton<WizardController>
     [SerializeField] private GameObject visualizationWindow;
     [SerializeField] private GameObject processingWindow;
     [SerializeField] private GameObject helpWindow;
+    [SerializeField] private GameObject settingsWindow;
 
-
+    [SerializeField] private ToggleGroup qualityToggleGroup;
     [SerializeField]
     private Dropdown clustersDropdown;
     [HideInInspector]
@@ -84,10 +87,12 @@ public class WizardController : Singleton<WizardController>
     [SerializeField]
     private bool brocadedFreestyle;
 
+    private bool _visualizationState = false;
+
     private void Awake()
     {
         clusterList = new List<Color>();
-        imageProcessingResults = new List<Texture2D>();
+        imageProcessingResults = new List<Mat>();
         yarnPanels = new List<YarnPanel>();
         
       
@@ -167,16 +172,18 @@ public class WizardController : Singleton<WizardController>
     public void ChangeColorSelectedYarn(Color newColor)
     {
         selectedYarnPanel.outputColor = newColor;
-        /*
+        
         if(selectedYarnPanel.yarnZone != YarnPanel.YarnZone.Warp)
             selectedYarnPanel.parentManager.GenerateOutputImage();
-            */
+        
     }
 
     public void ToggleColorPickerWindow()
     {
         if (!colorPickerWindow.activeInHierarchy)
-            colorPicker.CurrentColor = selectedYarnPanel.outputColor;
+        {
+            colorPicker.AssignColor(selectedYarnPanel.outputColor);
+        }
         else
         {
             selectedYarnPanel.UpdateColor();
@@ -189,8 +196,20 @@ public class WizardController : Singleton<WizardController>
         weaveTechniqueWindow.SetActive(!weaveTechniqueWindow.activeInHierarchy);
     }
     public void ToggleHelpWindow()
+        {
+            helpWindow.SetActive(!helpWindow.activeInHierarchy);
+        }
+    
+    public void ToggleSetttingsWindow()
     {
-        helpWindow.SetActive(!helpWindow.activeInHierarchy);
+        settingsWindow.SetActive(!settingsWindow.activeInHierarchy);
+        if (settingsWindow.activeInHierarchy)
+        {
+            if (!PlayerPrefs.HasKey("Quality"))
+                PlayerPrefs.SetInt("Quality",1);
+            int quality = PlayerPrefs.GetInt("Quality");
+            qualityToggleGroup.GetComponentsInChildren<Toggle>()[quality].SetIsOnWithoutNotify(true);
+        }
     }
 
     public void ToggleVisualizationWindow()
@@ -211,7 +230,8 @@ public class WizardController : Singleton<WizardController>
 
     public void SaveAllPosterizedImages()
     {
-        byte[] bytesPosterized = posterizeResult.EncodeToPNG ();
+        //MANOLO: Comentado al pasar todas las Textures2D a Mat en el procesado de imágenes.
+        /*byte[] bytesPosterized = posterizeResult.EncodeToPNG ();
         File.WriteAllBytes (Application.persistentDataPath + "/"+_generalTechnique +"_posterized.png", bytesPosterized);
         
         var cont = 0;
@@ -221,7 +241,7 @@ public class WizardController : Singleton<WizardController>
             byte[] bytes = texture.EncodeToPNG ();
             File.WriteAllBytes (fileNamePersistentData, bytes);
             cont++;
-        }
+        }*/
     }
 
     public void GenerateSTLPatch(string path)
@@ -282,16 +302,17 @@ public class WizardController : Singleton<WizardController>
         }
         else 
             patch.weftYarn = yarnPanels[indexOfBackground].GetComponent<YarnPanel>().GetScriptableYarn();
-            
-        patch.technique.pattern = selectedWeave.weavePattern.texture;
-        patch.pictoricals.Clear();
+        patch.technique.pattern = new Mat(selectedWeave.weavePattern.texture.width,selectedWeave.weavePattern.texture.height,CvType.CV_8U);
+        Utils.texture2DToMat(selectedWeave.weavePattern.texture, patch.technique.pattern);
+        
+        patch.pictorials.Clear();
         for (var i=0;i<imageProcessingResults.Count;i++)
         {
             if(_generalTechnique == GeneralTechnique.Damask || yarnPanels[i].GetComponent<YarnPanel>().yarnZone !=YarnPanel.YarnZone.Pictorial)
                 continue;
             var tex = imageProcessingResults[i];
 
-            var picto = new Pictorical();
+            var picto = new Pictorial();
             picto.drawing = new Pattern();
             picto.drawing.pattern = tex;
             
@@ -320,7 +341,7 @@ public class WizardController : Singleton<WizardController>
                              (_generalTechnique == GeneralTechnique.Freestyle && brocadedFreestyle);
             
             
-            patch.pictoricals.Add(picto);
+            patch.pictorials.Add(picto);
         }
         
         //patch.divider = -1;
@@ -331,15 +352,15 @@ public class WizardController : Singleton<WizardController>
         
         TogglePatchActive(true);
         ToggleProcessingWindow();
-        visualizationWindow.SetActive(true);
-        
+        SetVisualizationState(true);
+        //visualizationWindow.SetActive(true);
     }
     
     public void Generate3DPatch()
     {
         ToggleProcessingWindow();
-        wizardWindow.SetActive(false);
-        StartCoroutine(WeavePatch(0.5f));
+        //wizardWindow.SetActive(false);
+        StartCoroutine(WeavePatch(0.0f));
     }
 
     public void Update3DVisualization()
@@ -425,5 +446,56 @@ public class WizardController : Singleton<WizardController>
         //Activamos el tab de homografia
         tabs[1].GetComponent<Toggle>().isOn = true;
        
+    }
+
+    public void setQuality(int qualityLevel)
+    {
+        
+        if(qualityLevel != PlayerPrefs.GetInt("Quality"))
+        {
+            print("Change Quality Level to "+qualityLevel);
+            PlayerPrefs.SetInt("Quality", qualityLevel);
+            if(_visualizationState)
+                Update3DVisualization();
+        }
+        qualityToggleGroup.GetComponentsInChildren<Toggle>()[qualityLevel].SetIsOnWithoutNotify(true);
+        print("Set Quality Level to "+qualityLevel);
+        /*
+        if (toggle.isOn)
+        {
+            string name = toggle.name;
+            print("hola, soy "+name+ " y estaba encendido");
+            var qualityLevel = 1;
+            if (name.Contains("HIGH"))
+                qualityLevel = 2;
+            else if (name.Contains("MED"))
+                qualityLevel = 1;
+            else if (name.Contains("LOW"))
+                qualityLevel = 0;
+            if (qualityLevel != PlayerPrefs.GetInt("Quality"))
+            {
+                PlayerPrefs.SetInt("Quality", qualityLevel);
+                if(_visualizationState)
+                    Update3DVisualization();
+            }
+        }
+        else{
+            toggle.SetIsOnWithoutNotify(true);
+            print("hola, soy "+toggle.name+ " y estaba apagado");
+        }
+        */
+       
+
+    }
+
+    public bool GetVisualizationState()
+    {
+        return _visualizationState;
+    }
+
+    public void SetVisualizationState(bool active)
+    {
+        _visualizationState = active;
+        wizardWindow.GetComponent<Image>().enabled = !_visualizationState;
     }
 }

@@ -4,9 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Honeti;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class YarnPanel : MonoBehaviour
+public class YarnPanel : MonoBehaviour, IPointerEnterHandler
 {
     public enum YarnZone
     {
@@ -272,5 +273,13 @@ public class YarnPanel : MonoBehaviour
 
         if (yarnZone == YarnZone.Warp) return;
             parentManager.GenerateOutputImage();
+    }
+    
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (yarnZone == YarnZone.Warp) return;
+        {
+            parentManager.HighlightSelectedYarn(this, true);
+        }
     }
 }

@@ -6,9 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Silknow_UI/VirtualLoomWizard_LightingOK.unity
-    guid: 73df562f0a89256469549a1f431c10cc
-  - enabled: 0
-    path: Assets/Scenes/DebugWebParams.unity
-    guid: e26a124b4c50661448fe74014af3921f
+    path: Assets/Scenes/VirtualLoomWizard.unity
+    guid: dc16f63d0a76c2a43bfdc126b3eb399a
   m_configObjects: {}
