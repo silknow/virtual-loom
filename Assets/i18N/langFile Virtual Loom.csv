@@ -14,7 +14,7 @@ Lang Code	EN	ES	FR	IT	URI	ATTRIBUTE
 ^select the technique to posterize the image based on the desired number of clusters.	Select the technique to posterize the image based on the desired number of clusters.	Selecciona la técnica para posterizar la imagen basado en el número de zonas deseadas.	Sélectionnez la technique pour postériser l'image en fonction du nombre souhaité de grappes.	Seleziona la tecnica per posterizzare l'immagine in base al numero desiderato di cluster.		
 ^clusters:	Clusters:	Zonas:	Les zones:	Le zone:		
 ^apply	Apply	Aplicar	Appliquer	Applicare		
-^select output color, type of yarns and weave to generate 3D representation of the textile.	Select output color, type of yarns and weave to generate 3D representation of the textile.	Selecciona el color final, el tipo de hilo y ligamento para generar la representación 3D de la tela.	Sélectionnez la couleur de sortie	 le type de fils et le tissage pour générer une représentation 3D du textile.		
+^select output color, type of yarns and weave to generate 3D representation of the textile.	Select output color, type of yarns and weave to generate 3D representation of the textile.	Selecciona el color final, el tipo de hilo y ligamento para generar la representación 3D de la tela.	Sélectionnez la couleur de sortie	le type de fils et le tissage pour générer une représentation 3D du textile.		
 ^background Zone:	Background Zone:	Área de fondo:	Zone de fond:	Zone de sfondo		
 ^pictorial Zones:	Pictorial Zones:	Zonas pictóricas:	Zones picturales:	Zone pittoriche:		
 ^background	Ground	Fondo	Fond	Sfondo		
@@ -35,3 +35,5 @@ Lang Code	EN	ES	FR	IT	URI	ATTRIBUTE
 ^layers	Layers	Capas	Couches	Strati		
 ^configure virtualLoom	VirtualLoom Settings	Parámetros de VirtualLoom	Paramètres de VirtualLoom	Impostazioni VirtualLoom		
 ^explore the 3D model.	Explore the 3D model	Explora el model 3D	Explorez le modèle 3D	Esplora il modello 3D		
+^3D View Interaction	3D View Interaction	Interacción sobre la vista 3D	"Interaction sur la visualisation 3D "	Interazione sulla visualizzazione 3D		
+^Minimap Interaction	Minimap Interation	Interacción sobre el minimapa	Interaction sur la mini-carte	Interazione sulla minimappa		

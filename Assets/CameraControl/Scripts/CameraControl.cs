@@ -99,6 +99,12 @@ public class CameraControl : MonoBehaviour
     public void resetRotation()
     {
         _cinemachineTargetGroup.transform.localRotation=_rotationAnchor.localRotation=Quaternion.identity;
+        cameraFollowOffsetTargetAngle = cameraFollowOffsetTargetMaxAngle;
+        _translationAnchor.localPosition=new Vector3(0,0,1);
+        _translationAnchor.localScale = Vector3.one * 0.1f;
+        while (!AnchorOutOfBounds())
+            _translationAnchor.localScale *=  1.01f;
+        _translationAnchor.localPosition=new Vector3(0,0,1);
     }
 
     public void setAspect(float aspect)
@@ -113,7 +119,7 @@ public class CameraControl : MonoBehaviour
         bounds = target.GetComponent<Patch>().bounds;
         bounds.extents *= boundScale;
         //float aspect = bounds.extents.z / bounds.extents.x;
-        if (!AnchorOutOfBounds() || Input.mouseScrollDelta.y<0.0f)
+        if (!AnchorOutOfBounds() || Input.mouseScrollDelta.y>0.0f)
             _translationAnchor.localScale *=  Mathf.Max(0.1f,1.0f-Input.mouseScrollDelta.y*Time.deltaTime*zoomSpeed);
         //Ajusta aspect ventana
         _rotationAnchor.localScale = new Vector3(1.0f*Screen.width / Screen.height, 1, 1);
@@ -138,7 +144,11 @@ public class CameraControl : MonoBehaviour
                                              (Input.mousePosition.y - _lastMousePos.y), cameraFollowOffsetTargetMinAngle, cameraFollowOffsetTargetMaxAngle);
             
         }
-        cameraFollowOffsetTarget =  Quaternion.Euler(cameraFollowOffsetTargetAngle, 0, 0)*Vector3.back*14.14f;
+
+        float rotY = 0;
+        if (cameraFollowOffsetTargetAngle < 0)
+            rotY = 180;
+        cameraFollowOffsetTarget =  Quaternion.Euler(cameraFollowOffsetTargetAngle, rotY, 0)*Vector3.back*14.14f;
         if (Input.GetKeyDown(KeyCode.Space))
             resetRotation();
         

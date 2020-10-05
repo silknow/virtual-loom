@@ -10,7 +10,7 @@ public class SuggestedWeavingTechnique : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (jsonReader.instance.config.weaving == "")
+        if (jsonReader.instance.config.weaving.Count == 0)
         {
             GetComponent<RectTransform>().sizeDelta = Vector2.zero;
             label.gameObject.SetActive(false);
@@ -18,7 +18,11 @@ public class SuggestedWeavingTechnique : MonoBehaviour
         }
         else
         {
-            value.text = jsonReader.instance.config.weaving;
+            foreach (var weaving in jsonReader.instance.config.weaving)
+            {
+                value.text = weaving + ", ";
+            }
+            value.text = value.text.Substring(0, value.text.Length - 2);
         }
     }
 

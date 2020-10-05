@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using OpenCVForUnity.CoreModule;
 using OpenCVForUnity.UnityUtils;
+using Silknow_UI.Scripts;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -34,6 +35,7 @@ public class WizardController : Singleton<WizardController>
     
     public YarnPanel warpPanel;
     public List<YarnPanel> yarnPanels;
+    public List<YarnEntity> yarnEntities;
     
     public List<Mat> imageProcessingResults;
     public Mat backgroundWhiteTexture;
@@ -52,7 +54,10 @@ public class WizardController : Singleton<WizardController>
     [SerializeField] private GameObject visualizationWindow;
     [SerializeField] private GameObject processingWindow;
     [SerializeField] private GameObject helpWindow;
+    [SerializeField] private GameObject helpVisualizationWindow;
+    [SerializeField] private GameObject helpYarnsWindow;
     [SerializeField] private GameObject settingsWindow;
+    public GameObject weaveDetailWindow;
 
     [SerializeField] private ToggleGroup qualityToggleGroup;
     [SerializeField]
@@ -94,6 +99,7 @@ public class WizardController : Singleton<WizardController>
         clusterList = new List<Color>();
         imageProcessingResults = new List<Mat>();
         yarnPanels = new List<YarnPanel>();
+        yarnEntities = new List<YarnEntity>();
         
       
         techniqueRestrictions = Resources.LoadAll<WeavingTechniqueRestrictions>("WeavingTechniques").ToList();
@@ -175,6 +181,11 @@ public class WizardController : Singleton<WizardController>
         
         if(selectedYarnPanel.yarnZone != YarnPanel.YarnZone.Warp)
             selectedYarnPanel.parentManager.GenerateOutputImage();
+        else
+        {
+            if(selectedTechniqueRestrictions.uniformBackground)
+                warpPanel.parentManager.GenerateOutputImage();
+        }
         
     }
 
@@ -196,10 +207,20 @@ public class WizardController : Singleton<WizardController>
         weaveTechniqueWindow.SetActive(!weaveTechniqueWindow.activeInHierarchy);
     }
     public void ToggleHelpWindow()
-        {
-            helpWindow.SetActive(!helpWindow.activeInHierarchy);
-        }
-    
+    {
+        helpWindow.SetActive(!helpWindow.activeInHierarchy);
+    }
+        
+    public void ToggleVisualizationHelpWindow()
+    {
+        helpVisualizationWindow.SetActive(!helpVisualizationWindow.activeInHierarchy);
+    }
+        
+    public void ToggleYarnsHelpWindow()
+    {
+        helpYarnsWindow.SetActive(!helpYarnsWindow.activeInHierarchy);
+    }
+
     public void ToggleSetttingsWindow()
     {
         settingsWindow.SetActive(!settingsWindow.activeInHierarchy);
@@ -254,7 +275,6 @@ public class WizardController : Singleton<WizardController>
 
     }
 
-
     IEnumerator WeavePatch(float delayTime)
     {
         
@@ -271,44 +291,50 @@ public class WizardController : Singleton<WizardController>
         instantiatedPatch.transform.parent.GetComponent<RotatePatch>().targetRotation = 0;
 
         //Background Pattern
-
-
-        var backgroundWeft = yarnTabManager.backgroundYarns.First(by => by.yarnZone == YarnPanel.YarnZone.Weft);
-        
-        var indexOfBackground = yarnPanels.IndexOf(yarnPanels.First(y => y.GetComponent<YarnPanel>() == backgroundWeft));
-
-
+        var background = yarnEntities.First(y =>y.yarnPanel.isBackground && y.yarnPanel.yarnZone == YarnPanel.YarnZone.Weft);
         if (selectedTechniqueRestrictions.uniformBackground)
         {
             patch.backgroundPattern.pattern = backgroundWhiteTexture;
         }
         else
         {
-            patch.backgroundPattern.pattern = imageProcessingResults[indexOfBackground];
+            patch.backgroundPattern.pattern = imageProcessingResults[background.clusterId];
         }
+
+        background.geometryIndex = 1;
         
         
         patch.warpYarn = warpPanel.GetScriptableYarn();
-      
-        if(_generalTechnique == GeneralTechnique.Damask) 
-            patch.weftYarn = yarnPanels[yarnPanels.IndexOf(yarnPanels.First(y => y.GetComponent<YarnPanel>().yarnZone == YarnPanel.YarnZone.Pictorial ))].GetComponent<YarnPanel>().GetScriptableYarn();
+
+        if (_generalTechnique == GeneralTechnique.Damask)
+        {
+            var damaskBg = yarnEntities.First(y => y.yarnPanel.yarnZone == YarnPanel.YarnZone.Pictorial);
+            patch.weftYarn = damaskBg.yarnPanel.GetScriptableYarn();
+            background.geometryIndex = 0;
+            damaskBg.geometryIndex = 1;
+        }
         else if (!selectedTechniqueRestrictions.uniformBackground)
         {
-            var pictorialBg = yarnTabManager.backgroundYarns.FindLast(by => by.yarnZone == YarnPanel.YarnZone.Weft);
-        
-            var indexOfPictorialBg = yarnPanels.IndexOf(yarnPanels.First(y => y.GetComponent<YarnPanel>() == pictorialBg));
-            
-            patch.weftYarn = yarnPanels[indexOfPictorialBg].GetComponent<YarnPanel>().GetScriptableYarn();
+            var pictorialBg = yarnEntities.FindLast(y =>
+                y.yarnPanel.isBackground && y.yarnPanel.yarnZone == YarnPanel.YarnZone.Weft);
+
+            patch.weftYarn = pictorialBg.yarnPanel.GetScriptableYarn();
+            background.geometryIndex = 0;
+            pictorialBg.geometryIndex = 1;
         }
-        else 
-            patch.weftYarn = yarnPanels[indexOfBackground].GetComponent<YarnPanel>().GetScriptableYarn();
+        else
+        {
+            patch.weftYarn = background.yarnPanel.GetScriptableYarn();
+        }
+
         patch.technique.pattern = new Mat(selectedWeave.weavePattern.texture.width,selectedWeave.weavePattern.texture.height,CvType.CV_8U);
         Utils.texture2DToMat(selectedWeave.weavePattern.texture, patch.technique.pattern);
         
         patch.pictorials.Clear();
-        for (var i=0;i<imageProcessingResults.Count;i++)
+        var geometryIndex = 2;
+        for (var i=0;i<yarnEntities.Count;i++)
         {
-            if(_generalTechnique == GeneralTechnique.Damask || yarnPanels[i].GetComponent<YarnPanel>().yarnZone !=YarnPanel.YarnZone.Pictorial)
+            if(_generalTechnique == GeneralTechnique.Damask || yarnEntities[i].yarnPanel.yarnZone !=YarnPanel.YarnZone.Pictorial)
                 continue;
             var tex = imageProcessingResults[i];
 
@@ -317,7 +343,7 @@ public class WizardController : Singleton<WizardController>
             picto.drawing.pattern = tex;
             
 
-            picto.yarn = yarnPanels[i].GetComponent<YarnPanel>().GetScriptableYarn();
+            picto.yarn = yarnEntities[i].yarnPanel.GetScriptableYarn();
             if (bindingWarp)
             {
                 picto.healedStep = 6;
@@ -342,6 +368,8 @@ public class WizardController : Singleton<WizardController>
             
             
             patch.pictorials.Add(picto);
+            yarnEntities[i].geometryIndex = geometryIndex;
+            geometryIndex++;
         }
         
         //patch.divider = -1;
@@ -355,7 +383,7 @@ public class WizardController : Singleton<WizardController>
         SetVisualizationState(true);
         //visualizationWindow.SetActive(true);
     }
-    
+
     public void Generate3DPatch()
     {
         ToggleProcessingWindow();
@@ -495,7 +523,10 @@ public class WizardController : Singleton<WizardController>
 
     public void SetVisualizationState(bool active)
     {
+        
         _visualizationState = active;
         wizardWindow.GetComponent<Image>().enabled = !_visualizationState;
+        if (active)
+            LayerPanelManager.instance.RefreshLayers();
     }
 }

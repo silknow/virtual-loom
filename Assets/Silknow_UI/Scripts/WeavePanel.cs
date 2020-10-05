@@ -2,9 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class WeavePanel : MonoBehaviour
+public class WeavePanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public Color selectedWeaveColor;
     public Color defaultColor = Color.white;
@@ -47,6 +48,21 @@ public class WeavePanel : MonoBehaviour
     {
         GetComponent<Image>().color = selectedWeaveColor;
     }
-    
-   
+
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        WizardController.instance.weaveDetailWindow.SetActive(true);
+        WizardController.instance.weaveDetailWindow.GetComponent<WeaveDetail>().set(weaveImage.GetComponent<Image>().sprite);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        WizardController.instance.weaveDetailWindow.SetActive(false);
+    }
+
+    public void OnDisable()
+    {
+        WizardController.instance.weaveDetailWindow.SetActive(false);
+    }
 }

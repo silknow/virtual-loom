@@ -356,6 +356,8 @@ public class Patch : MonoBehaviour
     public void CleanAll()
     {
         var meshRendererArray = GetComponentsInChildren<MeshRenderer>(true);
+        bounds.size = Vector3.zero;
+        bounds.center = Vector3.zero;
         foreach (var mr in meshRendererArray)
         {
             Destroy(mr.material);
@@ -448,6 +450,8 @@ public class Patch : MonoBehaviour
         PrepareStlModel();
 
         RenderPreparedCameras();
+        
+        CameraControl.instance.Invoke("resetRotation",0.1f);
 
     }
     private void PreprocessPictorials()

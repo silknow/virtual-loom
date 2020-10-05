@@ -1,20 +1,27 @@
-using System;
-using System.Collections;
+
 using System.Collections.Generic;
-using Honeti;
+
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using UnityEngine;
 
 [System.Serializable] 
 public class VLConfig
 {
-    
+
     public string language;
     public string imgUri;
     public Vector2 dimension;
-    public string technique;
-    public string weaving;
+    [JsonProperty("technique")]
+    [JsonConverter(typeof(SingleOrArrayConverter<string>))]
+    public List<string> technique;
+    [JsonProperty("weaving")]
+    [JsonConverter(typeof(SingleOrArrayConverter<string>))]
+    public List<string> weaving;
     public Color backgroundColor;
     public bool backgroundColorReceived=false;
     public List<string> materials;
     public string endpoint;
 }
+
+

@@ -244,7 +244,7 @@ public class YarnPanel : MonoBehaviour, IPointerEnterHandler
             outputColor = sy.fixedColor;
             outputColorImage.GetComponent<Button>().interactable = false;
         }
-        else if (WizardController.instance._generalTechnique == GeneralTechnique.Damask && yarnZone == YarnZone.Warp)
+        else if (!WizardController.instance.selectedTechniqueRestrictions.uniformBackground && yarnZone == YarnZone.Warp)
         {
             outputColorImage.GetComponent<Button>().interactable = false;
         }

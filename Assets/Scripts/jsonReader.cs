@@ -1,10 +1,12 @@
-﻿using System.Collections;
+﻿    using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Honeti;
+using Newtonsoft.Json;
 using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.Networking;
 
 public class jsonReader : MonoBehaviour
@@ -52,18 +54,19 @@ public class jsonReader : MonoBehaviour
 //     }
 // #endif
         if (debug != null)
-            debug.text = jsonString;    
+            debug.text = jsonString;
+#if UNITY_STANDALONE
         ImaginationOverflow.UniversalDeepLinking.DeepLinkManager.Instance.LinkActivated += Instance_LinkActivated;
+#endif
     }
-
+#if UNITY_STANDALONE
     private void Instance_LinkActivated(ImaginationOverflow.UniversalDeepLinking.LinkActivation s)
     {
         jsonString = UnityWebRequest.UnEscapeURL(s.QueryString["data"]);
 
-        Init();
-
-        
+        Initialize();
     }
+#endif
     private  void GetConfigFileFromParam()
     {
         var args = System.Environment.GetCommandLineArgs();
@@ -117,7 +120,7 @@ public class jsonReader : MonoBehaviour
         }
     }
 
-    void Init()
+    void Initialize()
     {
         Debug.Log("Init()");
         Init(jsonString);
@@ -125,17 +128,18 @@ public class jsonReader : MonoBehaviour
     // Update is called once per frame
     void Init(string m)
     {
-        Debug.Log("Init("+m+")");
+        //Para deshabilitar Unity Analytics
+        //Analytics.enabled = false;
         if (msg)
             msg.text = m;
         try
         {
-            config = JsonUtility.FromJson<VLConfig>(m);
-            Debug.Log("Config created: Image "+config.imgUri);
+            config = JsonConvert.DeserializeObject<VLConfig>(m);
+            Debug.Log("Config created: Image " + config.imgUri);
             if (m.Contains("backgroundColor:"))
                 config.backgroundColorReceived = true;
-            if (config != null && config.endpoint!="")
-                PlayerPrefs.SetString("endpoint",config.endpoint);
+            if (config != null && config.endpoint != "")
+                PlayerPrefs.SetString("endpoint", config.endpoint);
             if (dimension)
             {
                 dimension.color = Color.white;
@@ -163,9 +167,15 @@ public class jsonReader : MonoBehaviour
                 materials.text = materials.text.Substring(0, materials.text.Length - 1);
             }
 
-            if (config != null) 
-                I18N.instance.setLanguage(config.language);
-            if (language)
+            if (config != null)
+                try
+                {
+                    I18N.instance.setLanguage(config.language);
+                }
+                catch(System.ArgumentException){
+                }
+
+        if (language)
                 language.value = (int) I18N.instance.gameLang;
             if (color && config.backgroundColorReceived)
                 color.color = config.backgroundColor;
@@ -179,7 +189,6 @@ public class jsonReader : MonoBehaviour
         }
         catch (System.ArgumentException ae)
         {
-            Debug.LogError(ae.Message);
             if (debug)
                 debug.text = "Parsing error: " + ae.Message;
         }

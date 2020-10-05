@@ -34,6 +34,8 @@ public class YarnLayerPanel : MonoBehaviour
     [SerializeField]
     private Toggle visibilityToggle;
 
+    public YarnEntity yarnEntity;
+
 
     public void OnEnable()
     {
@@ -55,8 +57,12 @@ public class YarnLayerPanel : MonoBehaviour
     public void OnToggleVisibility(bool isOn)
     {
         //HIDE/Show Layer in patch
-        print("hide / show layer in patch");
-        WizardController.instance.instantiatedPatch.setYarnActive(0, isOn);
+        if(yarnEntity.geometryIndex!=-1)
+            WizardController.instance.instantiatedPatch.setYarnActive(yarnEntity.geometryIndex, isOn);
+        else
+        {
+            print("geometry Index -1");
+        }
     }
 
     public void OnPointerClick(BaseEventData eventData)

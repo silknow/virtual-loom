@@ -8,9 +8,10 @@ public class SuggestedGeneralTechnique : MonoBehaviour
     public Text label;
     public Text value;
     // Start is called before the first frame update
+    
     void Start()
     {
-        if (jsonReader.instance.config.technique == "")
+        if (jsonReader.instance.config.technique.Count == 0)
         {
             GetComponent<RectTransform>().sizeDelta = Vector2.zero;
             label.gameObject.SetActive(false);
@@ -18,7 +19,11 @@ public class SuggestedGeneralTechnique : MonoBehaviour
         }
         else
         {
-            value.text = jsonReader.instance.config.technique;
+            foreach (var technique in jsonReader.instance.config.technique)
+            {
+                value.text = technique + ", ";
+            }
+            value.text = value.text.Substring(0, value.text.Length - 2);
         }
     }
 

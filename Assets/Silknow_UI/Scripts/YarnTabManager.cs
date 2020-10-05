@@ -5,6 +5,7 @@ using System.Linq;
 using Honeti;
 using UnityEngine;
 using UnityEngine.UI;
+using Button = UnityEngine.UI.Button;
 
 public class YarnTabManager : MonoBehaviour
 {
@@ -37,6 +38,8 @@ public class YarnTabManager : MonoBehaviour
                 GameObject.Destroy(child.gameObject);
             else
             {
+                
+                child.GetComponent<YarnPanel>().parentManager = this;
                 backgroundYarns.Add(child.GetComponent<YarnPanel>());
                 if(WizardController.instance._generalTechnique == GeneralTechnique.Freestyle)
                     child.GetComponent<YarnPanel>().yarnTypeDropdown.interactable = true;
@@ -51,10 +54,32 @@ public class YarnTabManager : MonoBehaviour
         setLabelsMatrix();
 
         WizardController.instance.yarnPanels.Clear();
+        WizardController.instance.yarnEntities.Clear();
+        
         for (int i = 0; i < WizardController.instance.clusterList.Count; i++)
         {
             var panel = GameObject.Instantiate(prefabYarnPanel, parentPictorical).GetComponent<YarnPanel>();
+            panel.parentManager = this;
+            panel.inputColor = WizardController.instance.clusterList[i];
+            panel.outputColor = WizardController.instance.clusterList[i];
+            panel.yarnNumber =""+ (i + 1);
+            panel.isBackground = false;
+            panel.backgroundZone = parentBackground;
+            panel.pictoricalZone = parentPictorical;
             
+            panel.GetComponent<YarnPanel>().yarnZone = YarnPanel.YarnZone.Pictorial;
+            pictorialYarns.Add(panel.GetComponent<YarnPanel>());
+            WizardController.instance.yarnPanels.Add(panel);
+            panel.GetComponent<YarnPanel>().UpdateYarnTypes();
+            
+            var yarnEntity = new YarnEntity(WizardController.instance.clusterList[i],i,panel);
+            WizardController.instance.yarnEntities.Add(yarnEntity);
+        }
+        
+        
+        /*for (int i = 0; i < WizardController.instance.clusterList.Count; i++)
+        {
+            var panel = GameObject.Instantiate(prefabYarnPanel, parentPictorical).GetComponent<YarnPanel>();
             panel.parentManager = this;
             panel.inputColor = WizardController.instance.clusterList[i];
             panel.outputColor = WizardController.instance.clusterList[i];
@@ -74,11 +99,11 @@ public class YarnTabManager : MonoBehaviour
                 panel.GetComponent<YarnPanel>().yarnZone = YarnPanel.YarnZone.Weft;
                 panel.GetComponent<YarnPanel>().ActiveToggle(false);
                 backgroundYarns.Add(panel.GetComponent<YarnPanel>());
-            } */
+            } #1#
             
             WizardController.instance.yarnPanels.Add(panel);
             panel.GetComponent<YarnPanel>().UpdateYarnTypes();
-        }
+        }*/
 
         yarnsReady = true;
         Activate3DButton();
@@ -154,8 +179,13 @@ public class YarnTabManager : MonoBehaviour
 
     private void updateYarnColors() {
         var colors = new Color[30];
-        for (int i=0;i<WizardController.instance.yarnPanels.Count;i++) {
-            colors[i] = WizardController.instance.yarnPanels[i].GetComponent<YarnPanel>().outputColor;
+        for (int i=0;i<WizardController.instance.yarnPanels.Count;i++)
+        {
+            if (WizardController.instance.yarnPanels[i].yarnZone == YarnPanel.YarnZone.Weft &&
+                WizardController.instance.selectedTechniqueRestrictions.uniformBackground)
+                colors[i] = WizardController.instance.warpPanel.outputColor;
+            else
+                colors[i] = WizardController.instance.yarnPanels[i].GetComponent<YarnPanel>().outputColor;
         }
         imageGenerated.material.SetColorArray("_Colors", colors);
     }
