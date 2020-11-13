@@ -33,7 +33,7 @@ public class TabContentManager : MonoBehaviour
       switch (tab)
       {
          case  0:
-            Analytics.CustomEvent("LoadImage_Step", new Dictionary<string, object>
+            am.sendEvent("LoadImage_Step", new Dictionary<string, object>
             {
                {"duration", duration},
                {"mousemovement", am.mouseMovement},
@@ -42,7 +42,7 @@ public class TabContentManager : MonoBehaviour
             });
          break;
          case  1:
-            Analytics.CustomEvent("Homography_Step", new Dictionary<string, object>
+            am.sendEvent("Homography_Step", new Dictionary<string, object>
             {
                {"duration", duration},
                {"mousemovement", am.mouseMovement},
@@ -51,7 +51,7 @@ public class TabContentManager : MonoBehaviour
             });
             break;
          case  2:
-            Analytics.CustomEvent("Posterize_Step", new Dictionary<string, object>
+            am.sendEvent("Posterize_Step", new Dictionary<string, object>
             {
                {"duration", duration},
                {"mousemovement", am.mouseMovement},
@@ -61,7 +61,7 @@ public class TabContentManager : MonoBehaviour
             });
             break;
          case  3:
-            Analytics.CustomEvent("Yarns_Step", new Dictionary<string, object>
+            am.sendEvent("Yarns_Step", new Dictionary<string, object>
             {
                {"duration", duration},
                {"mousemovement", am.mouseMovement},
@@ -70,15 +70,17 @@ public class TabContentManager : MonoBehaviour
             });
             break;
          case  4:
-            Analytics.CustomEvent("Visualization_Step", new Dictionary<string, object>
+            am.sendEvent("Visualization_Step", new Dictionary<string, object>
             {
                {"duration", duration},
                {"mousemovement", am.mouseMovement},
                {"leftclicks", am.leftClicks},
                {"rightclicks", am.rightClicks}
             });
+            
             break;
-         
+
+
       }
    }
 }

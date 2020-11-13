@@ -327,7 +327,7 @@ public class WizardController : Singleton<WizardController>
             patch.weftYarn = background.yarnPanel.GetScriptableYarn();
         }
 
-        patch.technique.pattern = new Mat(selectedWeave.weavePattern.texture.width,selectedWeave.weavePattern.texture.height,CvType.CV_8U);
+        patch.technique.pattern = new Mat(selectedWeave.weavePattern.texture.height,selectedWeave.weavePattern.texture.width,CvType.CV_8U);
         Utils.texture2DToMat(selectedWeave.weavePattern.texture, patch.technique.pattern);
         
         patch.pictorials.Clear();

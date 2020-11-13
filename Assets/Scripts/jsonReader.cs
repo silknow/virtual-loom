@@ -32,9 +32,11 @@ public class jsonReader : MonoBehaviour
     public Text weaving;
     public Text materials;
     public Image color;
+    public bool analytics;
     public RawImage texture;
     public Text debug;
     public Dropdown language;
+    public AnalyticsMonitor am;
     // Start is called before the first frame update
     void Start()
     {
@@ -186,6 +188,9 @@ public class jsonReader : MonoBehaviour
                 if (texture)
                     StartCoroutine(GetText(config.imgUri, TextureLoaded));
             }
+
+            
+            am.enabled = analytics;
         }
         catch (System.ArgumentException ae)
         {

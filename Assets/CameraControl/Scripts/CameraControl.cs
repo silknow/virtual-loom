@@ -115,45 +115,53 @@ public class CameraControl : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-        if (mmb.dragging) return;
-        bounds = target.GetComponent<Patch>().bounds;
-        bounds.extents *= boundScale;
-        //float aspect = bounds.extents.z / bounds.extents.x;
-        if (!AnchorOutOfBounds() || Input.mouseScrollDelta.y>0.0f)
-            _translationAnchor.localScale *=  Mathf.Max(0.1f,1.0f-Input.mouseScrollDelta.y*Time.deltaTime*zoomSpeed);
-        //Ajusta aspect ventana
-        _rotationAnchor.localScale = new Vector3(1.0f*Screen.width / Screen.height, 1, 1);
-        if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(2)) 
-            _lastMousePos = Input.mousePosition;
 
-        if (Input.GetMouseButton(0))
+        if (!EventSystem.current.IsPointerOverGameObject()  &&
+            !mmb.dragging  
+            || (!Input.GetMouseButton(0) && !Input.GetMouseButton(1) && !Input.GetMouseButton(2) && Input.mouseScrollDelta.y==0)
+            )
         {
-            Vector3 p = _translationAnchor.localPosition;
-            _translationAnchor.localPosition += Time.deltaTime * translationSpeed *
-                                                (_rotationAnchor.right * (Input.mousePosition.x - _lastMousePos.x) +
-                                                 _rotationAnchor.forward * (Input.mousePosition.y - _lastMousePos.y));
+            bounds = target.GetComponent<Patch>().bounds;
+            bounds.extents *= boundScale;
+            //float aspect = bounds.extents.z / bounds.extents.x;
+            if (!AnchorOutOfBounds() || Input.mouseScrollDelta.y > 0.0f)
+                _translationAnchor.localScale *=
+                    Mathf.Max(0.1f, 1.0f - Input.mouseScrollDelta.y * Time.deltaTime * zoomSpeed);
+            //Ajusta aspect ventana
+            _rotationAnchor.localScale = new Vector3(1.0f * Screen.width / Screen.height, 1, 1);
+            if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(2))
+                _lastMousePos = Input.mousePosition;
+
+            if (Input.GetMouseButton(0))
+            {
+                Vector3 p = _translationAnchor.localPosition;
+                _translationAnchor.localPosition += Time.deltaTime * translationSpeed *
+                                                    (_rotationAnchor.right * (Input.mousePosition.x - _lastMousePos.x) +
+                                                     _rotationAnchor.forward *
+                                                     (Input.mousePosition.y - _lastMousePos.y));
+            }
+
+            if (Input.GetMouseButton(1))
+            {
+                _cinemachineTargetGroup.transform.localRotation = _rotationAnchor.localRotation *=
+                    Quaternion.AngleAxis(Time.deltaTime * rotationSpeed * (Input.mousePosition.x - _lastMousePos.x),
+                        Vector3.up);
+
+                cameraFollowOffsetTargetAngle = Mathf.Clamp(cameraFollowOffsetTargetAngle + rotationSpeed *
+                    Time.deltaTime *
+                    (Input.mousePosition.y - _lastMousePos.y), cameraFollowOffsetTargetMinAngle,
+                    cameraFollowOffsetTargetMaxAngle);
+
+            }
+
+            float rotY = 0;
+            if (cameraFollowOffsetTargetAngle < 0)
+                rotY = 180;
+            cameraFollowOffsetTarget = Quaternion.Euler(cameraFollowOffsetTargetAngle, rotY, 0) * Vector3.back * 14.14f;
+            if (Input.GetKeyDown(KeyCode.Space))
+                resetRotation();
+            PutAnchorInsideOfBounds();
         }
-
-        if (Input.GetMouseButton(1))
-        {
-            if (Input.GetKey(KeyCode.LeftShift)||Input.GetKey(KeyCode.RightShift))
-                _cinemachineTargetGroup.transform.localRotation=_rotationAnchor.localRotation *=
-                    Quaternion.AngleAxis(Time.deltaTime*rotationSpeed * (Input.mousePosition.x - _lastMousePos.x), Vector3.up); 
-        
-            cameraFollowOffsetTargetAngle = Mathf.Clamp(cameraFollowOffsetTargetAngle + rotationSpeed * Time.deltaTime *
-                                             (Input.mousePosition.y - _lastMousePos.y), cameraFollowOffsetTargetMinAngle, cameraFollowOffsetTargetMaxAngle);
-            
-        }
-
-        float rotY = 0;
-        if (cameraFollowOffsetTargetAngle < 0)
-            rotY = 180;
-        cameraFollowOffsetTarget =  Quaternion.Euler(cameraFollowOffsetTargetAngle, rotY, 0)*Vector3.back*14.14f;
-        if (Input.GetKeyDown(KeyCode.Space))
-            resetRotation();
-        
-
-                PutAnchorInsideOfBounds();
 
         rotation = _cinemachineTargetGroup.transform.localRotation.eulerAngles.y;
         if (bounds.extents.sqrMagnitude > 0.0f)

@@ -197,7 +197,7 @@ public class YarnPanel : MonoBehaviour, IPointerEnterHandler
                 }
             }
         }
-        GetComponent<RectTransform>().parent = value ? backgroundZone: pictoricalZone;
+        GetComponent<RectTransform>().SetParent(value ? backgroundZone: pictoricalZone);
         UpdateYarnTypes();
         parentManager.Activate3DButton();
     }
