@@ -11,6 +11,7 @@ public class GeneralTechniqueDropdown : Dropdown
     private int count = 0;
     void Start()
     {
+        base.Start();
         _i18NDropdown = GetComponent<I18NDropdown>();
     }
     protected override DropdownItem CreateItem(DropdownItem itemTemplate)

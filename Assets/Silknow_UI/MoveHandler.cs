@@ -12,7 +12,7 @@ public class MoveHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public UnityEvent moveCallback = null;
 
     private RectTransform m_DraggingPlane;
-
+    
     private Image _image;
 
     public Sprite pressedSprite;
@@ -26,12 +26,7 @@ public class MoveHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         _defaultSprite = _image.sprite;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+ 
     public void OnBeginDrag(PointerEventData eventData) {
         // var canvas = FindInParents<Canvas>(gameObject);
         // if (canvas == null)
@@ -49,14 +44,19 @@ public class MoveHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
         var rt = GetComponent<RectTransform>();
         Vector3 globalMousePos;
-        m_DraggingPlane = data.pointerEnter.transform as RectTransform;
-        
+        //m_DraggingPlane = data.pointerEnter.transform as RectTransform;
+        m_DraggingPlane = transform.parent as RectTransform;
         if (m_DraggingPlane == null)
             return;
-
+        Vector3[] corners = new Vector3[4];
+        
+        m_DraggingPlane.GetWorldCorners(corners);
+        Rect r = new Rect(corners[0], corners[2] - corners[0]);
         if (RectTransformUtility.ScreenPointToWorldPointInRectangle(m_DraggingPlane, data.position, data.pressEventCamera, out globalMousePos))
         {
-            rt.position = globalMousePos;
+            if (r.Contains(globalMousePos))
+                rt.position = globalMousePos;
+            
             //rt.rotation = m_DraggingPlane.rotation;
         }
 

@@ -19,6 +19,7 @@ public class YarnTabManager : MonoBehaviour
     public List<YarnPanel> pictorialYarns;
 
     public Button generate3DButton;
+    public Button generateSVG;
 
     public RawImage imageGenerated;
 
@@ -29,7 +30,8 @@ public class YarnTabManager : MonoBehaviour
     private void OnEnable()
     {
         WizardController.instance.yarnTabManager = this;
-        generate3DButton.interactable = false;
+        generateSVG.interactable = generate3DButton.interactable = false;
+        
         backgroundYarns.Clear();
         pictorialYarns.Clear();
         yarnsReady = false;
@@ -41,8 +43,12 @@ public class YarnTabManager : MonoBehaviour
                 
                 child.GetComponent<YarnPanel>().parentManager = this;
                 backgroundYarns.Add(child.GetComponent<YarnPanel>());
-                if(WizardController.instance._generalTechnique == GeneralTechnique.Freestyle)
+                if (WizardController.instance._generalTechnique == GeneralTechnique.Freestyle)
+                {
                     child.GetComponent<YarnPanel>().yarnTypeDropdown.interactable = true;
+                    child.GetComponent<YarnPanel>().outputColorImage.GetComponent<Button>().interactable = true;
+                }
+
                 child.GetComponent<YarnPanel>().UpdateYarnTypes();
             }
         }
@@ -112,7 +118,7 @@ public class YarnTabManager : MonoBehaviour
         bindingWarpToggle.SetActive(WizardController.instance.selectedTechniqueRestrictions.allowedBindingWarp);
 
         
-        //Pablo: Prueba 
+        //Pablo: Prueba pa siempre
         updateYarnColors();
         
     }
@@ -120,30 +126,15 @@ public class YarnTabManager : MonoBehaviour
     public void Activate3DButton()
     {
         if(WizardController.instance._generalTechnique !=GeneralTechnique.SpolinedDamask)
-            generate3DButton.interactable = backgroundYarns.Count >= 2;
+            generateSVG.interactable = generate3DButton.interactable = backgroundYarns.Count >= 2;
         else
-            generate3DButton.interactable = backgroundYarns.Count >= 3;
+            generateSVG.interactable = generate3DButton.interactable = backgroundYarns.Count >= 3;
     }
 
     public void GenerateOutputImage()
     {
         if(!yarnsReady)
             return;
-        // var tex = new Texture2D(WizardController.instance.posterizeResult.width,WizardController.instance.posterizeResult.height,TextureFormat.RGB24,false,false);
-        
-        // int rows = 0;
-        // for(int x = 0; x < tex.height; x++) {
-        //     for(int y = 0; y < tex.width; y++) {
-        //         int label = (int)WizardController.instance.labelsMatrix.get(rows, 0)[0];
-        //         Color c = WizardController.instance.yarnPanels[label].GetComponent<YarnPanel>().outputColor;
-        //         tex.SetPixel(y,x,c);
-        //         rows++;
-        //     }
-        // }
-
-        // tex.Apply();
-        // imageGenerated.texture = tex;
-
         // Jesús: set new colors
         updateYarnColors();
     }

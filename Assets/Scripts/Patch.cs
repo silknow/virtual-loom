@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 //using System.Windows.Forms;
 using UnityEngine;
@@ -374,7 +375,8 @@ public class Patch : MonoBehaviour
     
     public void Weave()
     {
-
+        Stopwatch stopWatch = new Stopwatch();
+        stopWatch.Start();
         gap.x = warpYarn.threadSize * 2 / weftYarn.threadAspect*compactness;
         gap.y = weftYarn.threadSize  * 2*compactnessY;
         gap.z = weftYarn.threadSize * 2*compactness;
@@ -452,7 +454,8 @@ public class Patch : MonoBehaviour
         RenderPreparedCameras();
         
         CameraControl.instance.Invoke("resetRotation",0.1f);
-
+        stopWatch.Stop();
+        MemoryStats.weaveDuration=stopWatch.ElapsedMilliseconds;
     }
     private void PreprocessPictorials()
     {

@@ -30,7 +30,6 @@ public class SaveSTLDialog : MonoBehaviour, IPointerDownHandler {
     }
     IEnumerator SaveWebSTL(float delayTime)
     {
-        yield return new WaitForSeconds(delayTime);
         var path = Application.persistentDataPath + "/textile.stl";
         if (!string.IsNullOrEmpty(path))
         {
@@ -43,6 +42,7 @@ public class SaveSTLDialog : MonoBehaviour, IPointerDownHandler {
         }
 
         WizardController.instance.ToggleProcessingWindow();
+        yield return null;
     }
 
     // Called from browser

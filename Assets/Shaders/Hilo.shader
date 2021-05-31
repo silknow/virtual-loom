@@ -5,9 +5,9 @@
         _Color ("Color", Color) = (1,1,1,1)
         _MetalColor("Metal Color", Color) = (1,1,1,1)
         _MainTex ("Albedo (RGB)", 2D) = "white" {}
-        _Glossiness ("Smoothness", Range(0,1)) = 0.5
+        _Smoothness ("Smoothness", Range(0,1)) = 0.5
         _Metallic ("Metallic", Range(0,1)) = 0.0
-		_GlossinessInMetal ("Smoothness in Metal", Range(0,1)) = 0.5
+		_SmoothnessInMetal ("Smoothness in Metal", Range(0,1)) = 0.5
         _MetallicInMetal ("Metallic in Metal", Range(0,1)) = 0.0
 		_Twist("Twist",Float) = 45
 		_NormalScale("NormalScale",Range(0,1)) = 1
@@ -43,7 +43,7 @@
 			float2 uv_NoiseMap;
         };
 
-        half _Glossiness;
+        half _Smoothness;
         half _Metallic;
         fixed4 _Color;
 		fixed4 _MetalColor;
@@ -52,7 +52,7 @@
 		half _NormalMapScale;
         half _NoiseMapScale;
         half _NoiseMapTiling;
-        half _GlossinessInMetal;
+        half _SmoothnessInMetal;
         half _MetallicInMetal;
         half _MetalTwist;
         half _MetalRepeat;
@@ -76,7 +76,7 @@
 			o.Albedo = c.rgb;
             // Metallic and smoothness come from slider variables
             o.Metallic = lerp( _MetallicInMetal, _Metallic,step(_MetallicBand,metalThreshold));
-            o.Smoothness = lerp( _GlossinessInMetal, _Glossiness,step(_MetallicBand,metalThreshold));
+            o.Smoothness = lerp( _SmoothnessInMetal, _Smoothness,step(_MetallicBand,metalThreshold));
             o.Alpha = c.a;
 
 			// Thread curvature normal

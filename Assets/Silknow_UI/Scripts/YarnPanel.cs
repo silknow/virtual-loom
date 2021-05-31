@@ -68,7 +68,7 @@ public class YarnPanel : MonoBehaviour, IPointerEnterHandler
     [SerializeField]
     private Image inputColorImage;
     [SerializeField]
-    private Image outputColorImage;
+    public Image outputColorImage;
     
    
     public Toggle backgroundToggle;
@@ -154,6 +154,8 @@ public class YarnPanel : MonoBehaviour, IPointerEnterHandler
                     yarnTypeDropdown.value = 0;
                     yarnTypeDropdown.RefreshShownValue();
                     yarnTypeDropdown.interactable = false;
+                    if (WizardController.instance.selectedTechniqueRestrictions.technique == GeneralTechnique.Brocade)
+                        outputColor = inputColor;
                     WizardController.instance.warpPanel.outputColor = outputColor;
                     WizardController.instance.warpPanel.inputColor = inputColor;
 
@@ -245,8 +247,9 @@ public class YarnPanel : MonoBehaviour, IPointerEnterHandler
             outputColorImage.GetComponent<Button>().interactable = false;
         }
         else if (!WizardController.instance.selectedTechniqueRestrictions.uniformBackground && yarnZone == YarnZone.Warp)
-        {
-            outputColorImage.GetComponent<Button>().interactable = false;
+        { 
+            if(WizardController.instance._generalTechnique != GeneralTechnique.Freestyle)
+                outputColorImage.GetComponent<Button>().interactable = false;
         }
         else
         {
@@ -262,7 +265,10 @@ public class YarnPanel : MonoBehaviour, IPointerEnterHandler
 
     public void UpdateColor()
     {
-        if ((WizardController.instance.selectedTechniqueRestrictions.technique == GeneralTechnique.Damask || WizardController.instance.selectedTechniqueRestrictions.technique == GeneralTechnique.SpolinedDamask) && yarnZone == YarnZone.Weft)
+        if ((WizardController.instance.selectedTechniqueRestrictions.technique == GeneralTechnique.Damask || 
+             WizardController.instance.selectedTechniqueRestrictions.technique == GeneralTechnique.SpolinedDamask ||
+             WizardController.instance.selectedTechniqueRestrictions.technique == GeneralTechnique.Brocade) && 
+            yarnZone == YarnZone.Weft)
         {
             if (parentManager.backgroundYarns[1] == this)
             {

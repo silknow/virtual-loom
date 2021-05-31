@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using OpenCVForUnity.CoreModule;
+using OpenCVForUnity.ImgprocModule;
 using OpenCVForUnity.UnityUtils;
 using Silknow_UI.Scripts;
 using UnityEngine;
@@ -265,6 +266,47 @@ public class WizardController : Singleton<WizardController>
         }*/
     }
 
+    public void GenerateSVG(string path)
+    {
+        StringWriter svgWriter = new StringWriter();
+        Vector2 size = new Vector2(instance.imageProcessingResults[0].cols(), instance.imageProcessingResults[0].rows());
+        svgWriter.WriteLine("<svg width=\""+size.x+"\" height=\""+size.y+"\" xmlns=\"http://www.w3.org/2000/svg\">");
+
+        List<MatOfPoint> contours = new List<MatOfPoint>();
+        MatOfPoint2f approx = new MatOfPoint2f();
+
+        Mat srcHierarchy = new Mat ();
+        int colorIndex = 0;
+        foreach (var layer in instance.imageProcessingResults)
+        {
+            var background = yarnEntities.First(y =>y.yarnPanel.isBackground && y.yarnPanel.yarnZone == YarnPanel.YarnZone.Weft);
+            if (colorIndex != background.clusterId)
+            {
+                
+                Imgproc.findContours(layer, contours, srcHierarchy,Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
+                svgWriter.WriteLine("<g>");
+                for (int i = 0; i < contours.Count; i++)
+                {
+                    MatOfPoint2f cnt = new MatOfPoint2f(contours[i].toArray());
+                    double epsilon = 0.01 * Imgproc.arcLength(cnt, true);
+                    //Imgproc.approxPolyDP(cnt, approx, epsilon, true);
+                    approx = cnt;
+                    List<Point> contourList = approx.toList ();
+                    svgWriter.Write("<path fill=\"none\" stroke=\"#"+ColorUtility.ToHtmlStringRGB(instance.clusterList[colorIndex])+"\" d=\"M");
+                    for (int j = 0; j < contourList.Count; j++)
+                        svgWriter.Write("" + contourList[j].x + " " + (size.y - contourList[j].y) + " L");
+                    svgWriter.GetStringBuilder().Length -= 1; //Eliminamos la última 'L'
+                    svgWriter.WriteLine("Z\" />");
+                }
+                svgWriter.WriteLine("</g>");
+            }
+
+            colorIndex++;
+        }
+        svgWriter.WriteLine("</svg>");
+        File.WriteAllText(path, svgWriter.ToString());
+
+    }
     public void GenerateSTLPatch(string path)
     {
         //Cambiar Ruta - File Dialog
@@ -295,6 +337,14 @@ public class WizardController : Singleton<WizardController>
         if (selectedTechniqueRestrictions.uniformBackground)
         {
             patch.backgroundPattern.pattern = backgroundWhiteTexture;
+        }
+        else if (selectedTechniqueRestrictions.technique == GeneralTechnique.SpolinedDamask)
+        {
+            var pictbackground = yarnEntities.Last(y =>y.yarnPanel.isBackground && y.yarnPanel.yarnZone == YarnPanel.YarnZone.Weft);
+            var matDamasse = new Mat();
+            OpenCVForUnity.CoreModule.Core.bitwise_not(imageProcessingResults[pictbackground.clusterId],matDamasse);
+            patch.backgroundPattern.pattern = matDamasse;
+
         }
         else
         {
@@ -458,7 +508,8 @@ public class WizardController : Singleton<WizardController>
 
     public void ToggleProcessingWindow()
     {
-        processingWindow.SetActive(!processingWindow.activeInHierarchy);
+        if (processingWindow)
+            processingWindow.SetActive(!processingWindow.activeInHierarchy);
     }
 
     public  void LoadFromJson(VLConfig cfg)
@@ -529,4 +580,6 @@ public class WizardController : Singleton<WizardController>
         if (active)
             LayerPanelManager.instance.RefreshLayers();
     }
+
+    
 }

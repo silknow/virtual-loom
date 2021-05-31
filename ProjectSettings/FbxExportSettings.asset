@@ -19,8 +19,12 @@
         ],
         "selectedFbxPath": 0,
         "selectedPrefabPath": 0,
-        "dccOptionNames": [],
-        "dccOptionPaths": [],
+        "dccOptionNames": [
+            "3ds Max 2021"
+        ],
+        "dccOptionPaths": [
+            "C:/Program Files/Autodesk/3ds Max 2021/3dsmax.exe"
+        ],
         "exportModelSettingsSerialize": {
             "exportFormat": 1,
             "animatedSkinnedMesh": false,
@@ -28,7 +32,8 @@
             "include": 0,
             "lodLevel": 0,
             "objectPosition": 0,
-            "exportUnrendered": true
+            "exportUnrendered": true,
+            "preserveImportSettings": false
         },
         "convertToPrefabSettingsSerialize": {
             "exportFormat": 0,
